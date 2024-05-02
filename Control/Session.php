@@ -8,6 +8,18 @@ class Session
     }
 
 
+    public function buscarRoles(){
+        $abmUsuarioRol= new AbmUsuarioRol();
+        if(isset($_SESSION['idusuario'])){
+            $idusuario=$_SESSION['idusuario'];
+            $roles=$abmUsuarioRol->buscar($idusuario);
+            foreach ($roles as $rol){
+                $objRoles[] = $rol->getObjRol();
+            }
+        }
+        return $objRoles;
+    }
+
 
     /** METODO INICIAR 
      * @param $nombreUsuario string
@@ -23,7 +35,12 @@ class Session
         $listaUsuario = $objAbmUsuario->buscar($datos);
         $usuario=$listaUsuario[0];
         if (count($listaUsuario)>0 && is_null($usuario->getDeshabilitado())){
-            $_SESSION['idusuario'] = $usuario->getId();
+            $_SESSION['idusuario'] = $usuario->getId(); //le asigno valor a $_SESSION['idusuario']
+            $listaObjRoles = $this->buscarRoles(); //Busco los roles que tiene el usuario con el id $_SESSION['idusuario'] 
+            foreach ($listaObjRoles as $unRol){
+                $roles[] = $unRol->getIdRol();
+            }
+            $_SESSION['idroles'] = $roles; //guardo los id de los roles que tiene el usuario 
             $resp = true;
         } else {
             $this->cerrar();

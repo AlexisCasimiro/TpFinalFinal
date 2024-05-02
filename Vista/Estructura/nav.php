@@ -24,6 +24,7 @@
       <span>Ver Como:</span>
       <form class="d-flex">
         <select class="form-select">
+          
           <option value="opcion1"></option>
           <option value="opcion2">Opción 2</option>
           <option value="opcion3">Opción 3</option>
