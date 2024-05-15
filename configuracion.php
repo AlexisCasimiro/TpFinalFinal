@@ -13,6 +13,7 @@ $ROOT =$_SERVER['DOCUMENT_ROOT']."/".$PROYECTO."/";
 //var_dump($ROOT);
 
 include_once($ROOT.'util/funciones.php');
+include_once($ROOT.'./Vista/Menu/menuDinamico.php');
 include_once($ROOT.'Vista/Estructura/header.php');
 
 

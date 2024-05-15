@@ -37,5 +37,6 @@ $colProductos= $abmProducto->buscar(null);
     </div>
 </div>
 <?php
+echo $_SESSION['idusuario'];//eliminar
 include_once "../Estructura/footer.php";
 ?>

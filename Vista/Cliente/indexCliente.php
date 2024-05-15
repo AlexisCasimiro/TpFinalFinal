@@ -43,7 +43,7 @@ if (count($colProductos)>0){
             <div class="my-3 px-2 text-center h-25 overflow-y-auto">
                 <p class="card-text">'.$destacadosP[$i]['prodetalle'].'</p>
             </div>
-            <a href="#" class="btn btn-primary mb-3">Ir a producto</a>
+            <a href="'.($session->validar() ? "./productos.php": "../login.php").'" class="btn btn-primary mb-3">Ver más</a>
             </div>';
         }
           
@@ -54,6 +54,8 @@ if (count($colProductos)>0){
     <!-- </Catálogo de opciones recomendadas> --->
 </div>
 </div>
+
 <?php
+echo $_SESSION['idusuario'];//eliminar
 include_once "../Estructura/footer.php";
 ?>

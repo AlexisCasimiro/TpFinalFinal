@@ -11,7 +11,7 @@ class Session
     public function buscarRoles(){
         $abmUsuarioRol= new AbmUsuarioRol();
         if(isset($_SESSION['idusuario'])){
-            $idusuario=$_SESSION['idusuario'];
+            $idusuario['idusuario']=$_SESSION['idusuario'];
             $roles=$abmUsuarioRol->buscar($idusuario);
             foreach ($roles as $rol){
                 $objRoles[] = $rol->getObjRol();
@@ -38,7 +38,7 @@ class Session
             $_SESSION['idusuario'] = $usuario->getId(); //le asigno valor a $_SESSION['idusuario']
             $listaObjRoles = $this->buscarRoles(); //Busco los roles que tiene el usuario con el id $_SESSION['idusuario'] 
             foreach ($listaObjRoles as $unRol){
-                $roles[] = $unRol->getIdRol();
+                $roles[] = $unRol->getId();
             }
             $_SESSION['idroles'] = $roles; //guardo los id de los roles que tiene el usuario 
             $resp = true;
@@ -82,8 +82,7 @@ class Session
     public function getUsuario()
     {
         $objAbmUsuario = new AbmUsuario();
-        $consulta = ['idusuario' => $_SESSION['idusuario']]; // pregunto si el usuario con 
-        // esa session esta registrado. Lo busco en la BD
+        $consulta = ['idusuario' => $_SESSION['idusuario']]; // pregunto si el usuario con esa session esta registrado. Lo busco en la BD
         $usuarios = $objAbmUsuario->buscar($consulta);
         if (count($usuarios) >= 1) {
             $usuarioRegistrado = $usuarios[0];
