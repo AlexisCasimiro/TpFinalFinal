@@ -10,8 +10,7 @@ class Producto
     private $proImagen;
     private $mensajeOperacion;
 
-    //Método constructor
-    function __construct()
+    public function __construct()
     {
         $this->idProducto = "";
         $this->proNombre = "";
@@ -22,7 +21,7 @@ class Producto
         $this->mensajeOperacion = "";
     }
 
-    function setear($id, $nombre, $detalle, $cantStock, $precio, $imagen)
+    public function setear($id, $nombre, $detalle, $cantStock, $precio, $imagen)
     {
         $this->idProducto = $id;
         $this->proNombre = $nombre;
@@ -33,73 +32,73 @@ class Producto
     }
 
     //Métodos set
-    function setIdProducto($id)
+    public function setIdProducto($id)
     {
         $this->idProducto = $id;
     }
 
-    function setNombre($nombre)
+    public function setNombre($nombre)
     {
         $this->proNombre = $nombre;
     }
 
-    function setDetalle($detalle)
+    public function setDetalle($detalle)
     {
         $this->proDetalle = $detalle;
     }
 
-    function setCantStock($cantStock)
+    public function setCantStock($cantStock)
     {
         $this->proCantStock = $cantStock;
     }
 
-    function setPrecio($precio)
+    public function setPrecio($precio)
     {
         $this->proPrecio = $precio;
     }
 
-    function setImagen($imagen)
+    public function setImagen($imagen)
     {
         $this->proImagen = $imagen;
     }
 
-    function setMensajeOperacion($mensaje)
+    public function setMensajeOperacion($mensaje)
     {
         $this->mensajeOperacion = $mensaje;
     }
 
     //Métodos get
-    function getIdProducto()
+    public function getIdProducto()
     {
         return $this->idProducto;
     }
 
-    function getNombre()
+    public function getNombre()
     {
         return $this->proNombre;
     }
 
-    function getDetalle()
+    public function getDetalle()
     {
         return $this->proDetalle;
     }
 
-    function getCantStock()
+    public function getCantStock()
     {
         return $this->proCantStock;
     }
 
-    function getPrecio()
+    public function getPrecio()
     {
         return $this->proPrecio;
     }
 
-    function getImagen()
+    public function getImagen()
     {
         return $this->proImagen;
     }
 
-    function getMensajeOperacion()
+    public function getMensajeOperacion()
     {
         return $this->mensajeOperacion;
     }

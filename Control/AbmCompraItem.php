@@ -41,7 +41,7 @@ class AbmCompraItem{
             
             // creo un obj producto
             $objP=new Producto();
-            $objP->setId($datos['idproducto']);
+            $objP->setIdProducto($datos['idproducto']);
             $objP->cargar(); 
 
             // creo al obj compra 
@@ -68,7 +68,7 @@ class AbmCompraItem{
         if(isset($datos['idcompraitem'])){
             // creo un obj producto
             $objP=new Producto();
-            $objP->setId($datos['idproducto']);
+            $objP->setIdProducto($datos['idproducto']);
             $objP->cargar(); 
 
             // creo al obj compra 
@@ -107,7 +107,9 @@ class AbmCompraItem{
      */
     public function alta($datos){
         $resp=false;
-        $datos['idcompraitem']=null;
+        date_default_timezone_set('America/Argentina/Buenos_Aires');
+        $fecha = date('Y-m-d H:i:s');
+        $datos['cofecha'] = $fecha;
         $objCI=$this->cargarObjeto($datos);
         if($objCI!=null && $objCI->insertar()){
             $resp=true;

@@ -84,7 +84,7 @@ class CompraItem{
                     $objC->setId($R['idcompra']);
                     $objC->cargar();
                     $objP=new Producto();
-                    $objP->setId($R['idproducto']);
+                    $objP->setIdProducto($R['idproducto']);
                     $objP->cargar();  
                     $this->setear($R['idcompraitem'],$objP,$objC,$R['cicantidad']);
 
@@ -109,7 +109,7 @@ class CompraItem{
     public function insertar(){
         $salida=false; // inicializacion del valor de retorno
          
-        $idProducto=$this->getObjProducto()->getId();
+        $idProducto=$this->getObjProducto()->getIdProducto();
         $idCompra=$this->getObjCompra()->getId();
         $baseDatos=new BaseDatos();
         $sql="INSERT INTO compraitem (idproducto,idcompra,cicantidad)
@@ -142,7 +142,7 @@ class CompraItem{
      */
     public function modificar(){
         $salida=false;
-        $idProducto=$this->getObjProducto()->getId();
+        $idProducto=$this->getObjProducto()->getIdProducto();
         $idCompra=$this->getObjCompra()->getId();
         $baseDatos=new BaseDatos();
         $sql="UPDATE compraitem SET idproducto=$idProducto, idcompra=$idCompra, cicantidad=".$this->getCantidad()." WHERE idcompraitem=".$this->getId();
@@ -219,7 +219,7 @@ class CompraItem{
                     $objP=new Producto();
                     $objC=new Compra();
 
-                    $objP->setId($row['idproducto']);
+                    $objP->setIdProducto($row['idproducto']);
                     $objP->cargar();
                     $objC->setId($row['idcompra']);
                     $objC->cargar();     
