@@ -1,5 +1,5 @@
 <?php 
-include_once "../configuracion.php";
+include_once "../../configuracion.php";
 $data = data_submitted();
 $objControl = new AbmUsuario();
 $list = $objControl->buscar(null);
@@ -13,3 +13,7 @@ foreach ($list as $elem){
     array_push($arreglo_salida, $nuevoElem);
 }
 var_dump($arreglo_salida);
+//verEstructura($arreglo_salida);
+echo json_encode($c, JSON_FORCE_OBJECT);
+
+?>
