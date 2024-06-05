@@ -3,7 +3,7 @@ include_once "../../configuracion.php";
 include_once "../Estructura/nav.php";
 //dia 2 del 4 tuve un error de no inicializar el session_start() en el ver menu, o sea me faltaba el script ver menu y en ese script estaba el new Session;
 // lo siguiente todavia no va hasta no tener el vermenu creado
-
+$usuario = $session->getUsuario();
 
 //$usuario=$SESSION->getUsuario();
 //var_dump($usuario);
@@ -36,28 +36,28 @@ if($correcto){
           <form id="edit-perfil" action="../Accion/modificarPerfil.php" method="POST">
             <div class="form-group">
               <label for="username">Usuario</label>
-              <input type="text" class="form-control" id="username" name="usnombre" placeholder="Ingrese su nombre de usuario">
+              <input type="text" class="form-control" id="username" name="usnombre" placeholder="Ingrese su nombre de usuario" value=<?php echo "'". $usuario->getNombre()."'" ?>>
                <div class="invalid-feedback">
                 Debe ingresar un nombre de usuario válido
                </div>
             </div>
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" class="form-control" id="email" name="usmail" placeholder="Ingrese su correo electrónico">
+              <input type="email" class="form-control" id="email" name="usmail" placeholder="Ingrese su correo electrónico" value=<?php echo "'". $usuario->getMail()."'" ?>>
               <div class="invalid-feedback">
                 Debe ingresar un email válido
                </div>
             </div>
             <div class="form-group">
               <label for="current-password">Contraseña Actual</label>
-              <input type="password" class="form-control" id="current-password" name="uspass" placeholder="Ingrese su contraseña actual">
+              <input type="password" class="form-control" id="current-password" name="uspass" placeholder="Ingrese su contraseña actual" >
               <div class="invalid-feedback">
                 Contraseña incorrecta
                </div>
             </div>
             <div class="form-group">
               <label for="new-password">Contraseña Nueva</label>
-              <input type="password" class="form-control" id="new-password" name="uspassnew" placeholder="Ingrese su nueva contraseña">
+              <input type="password" class="form-control" id="new-password" name="uspassnew" placeholder="Ingrese su nueva contraseña (opcional)">
             </div>
             <button type="submit" class="btn btn-primary">Guardar Cambios</button>
           </form>
@@ -69,12 +69,8 @@ if($correcto){
 <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.18.0/js/md5.min.js"></script>
 <script>
     var proyectoroot="<?php echo $PROYECTOROOT;?>"
-    var passActual=md5("3");
+    var passActual="<?php echo $usuario->getPassword();?>";
 </script>
-<!-- <script>
-    
-    // passActual="<?php //echo $usuario->getPassword();?>";
-</script> -->
 <script src="../JS/editarPerfil.js"></script>
 <?php
 include_once "../Estructura/footer.php";
