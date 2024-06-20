@@ -55,7 +55,7 @@ class AbmUsuario{
         $obj=null;
         if(isset($datos['idusuario'])){
             $obj=new Usuario();
-            $obj->setear($datos['idusuario'],$datos['usnombre'],$datos['uspass'],$datos['usmail'],$datos['usdeshabilitado']);
+            $obj->setear($datos['idusuario'],null,null,null,null);
 
         }// fin if 
         return $obj;
@@ -69,7 +69,7 @@ class AbmUsuario{
      */
     private function setadosCamposClaves($datos){
         $resp=false;
-        if(isset($datos['idusuario']) && isset($datos['usnombre']) && isset($datos['uspass']) && isset($datos['usmail']) && array_key_exists('usdeshabilitado',$datos)){
+        if(isset($datos['idusuario'])){
             $resp=true;
 
         }// fin if 
@@ -112,6 +112,21 @@ class AbmUsuario{
 
     }// fin function 
 
+    /** Permite habilitar un objeto 
+     * @param ARRAY $param
+     * @return BOOLEAN */
+    public function habilitar($param){
+        $resp = false;
+        if ($this->setadosCamposClaves($param)){
+            $objUsuario = $this->cargarObjetoConClave($param);
+            if ($objUsuario!=null and $objUsuario->habilitar()){
+                $resp = true;
+            }
+        }
+        return $resp;
+    }
+
+
     /**
      * MOFICAR 
      * @param array $datos
@@ -128,7 +143,6 @@ class AbmUsuario{
             }// fin if 
 
         }// fin if 
-//        var_dump($resp);
         return $resp; 
 
     }// fin function 

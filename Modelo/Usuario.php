@@ -204,6 +204,22 @@ class Usuario{
         return $salida; 
     }// fin function eliminar
 
+    public function habilitar(){
+        $resp = false;
+        $base = new BaseDatos();
+        $sql = "UPDATE usuario SET usdeshabilitado=NULL WHERE idusuario=" . $this->getId();
+        if ($base->Iniciar()){
+            if ($base->Ejecutar($sql)){
+                $resp = true;
+            } else {
+                $this->setMensaje("Usuario->habilitar: ".$base->getError());
+            }
+        } else {
+            $this->setMensaje("Usuario->habilitar: " . $base->getError());
+        }
+        return $resp;
+    }
+
 
     /**
      * METODO LISTAR 
