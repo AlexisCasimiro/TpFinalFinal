@@ -1,3 +1,13 @@
+<style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        footer {
+            margin-top: auto;
+        }
+    </style>
 <footer class="bg-dark text-white text-lg-start p-4">
     <div class="container">
         <div class="row">

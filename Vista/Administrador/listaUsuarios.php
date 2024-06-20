@@ -5,13 +5,6 @@ $abmUsuario=new AbmUsuario();
 $listaUsuarios=$abmUsuario->buscar(null);
 
 ?>
-<style>
-    footer{
-        position: absolute; /* Fijar al fondo de la página */
-        bottom: 0;
-        width: 100%;
-    }
-</style>
 <div class="container-fluid d-flex align-items-center justify-content-center full-height">
     <div class="text-center">
     <?php
