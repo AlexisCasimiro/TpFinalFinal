@@ -25,7 +25,6 @@ $listaUsuarios=$abmUsuario->buscar(null);
                                 </tr>
                             </thead>";
                 foreach($listaUsuarios as $unusuario){
-                    //vizualizamos los datos de los usuarios registrados en el sistema
                     echo "<tr class='align-middle'>";
                     echo "<td>" . $unusuario->getId() . "<input type='hidden' name='idusuario' value='" . $unusuario->getId() . "'></td>";
                     echo "<td>". $unusuario->getNombre() ."";
