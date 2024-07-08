@@ -9,9 +9,12 @@ if (isset($datos['idusuario'])) {
     $rolesSeleccionados = isset($_POST['roles']) ? $_POST['roles'] : [];
 
     $rolesActuales = $objUsuarioRol->buscar(['idusuario' => $idusuario]);
-    $rolesActualesIds = array_map(function($rolUsuario) {
-        return $rolUsuario->getObjRol()->getId();
-    }, $rolesActuales);
+    
+    // Obtener IDs de los roles actuales
+    $rolesActualesIds = [];
+    foreach ($rolesActuales as $rolUsuario) {
+        $rolesActualesIds[] = $rolUsuario->getObjRol()->getId();
+    }
 
     // Quitar roles no seleccionados
     foreach ($rolesActualesIds as $rolId) {
