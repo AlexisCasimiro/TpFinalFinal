@@ -97,7 +97,7 @@ if($correcto){
                     <!-- Campos del formulario -->
                     <!--Input del nombre -->
                     <div class="form-group">
-                        <label for="nombreProducto">Nombre</label><!--  HAY QUE CAMBIAR LOS NAME DE LOS IMPUT   -->
+                        <label for="nombreProducto">Nombre</label>
                         <input type="text" class="form-control" id="pronombre" name="pronombre" value='<?php echo $nomProducto; ?>'>
                         <div class='invalid-feedback'>
                             Debe ingresar un nombre valido
