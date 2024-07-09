@@ -1,19 +1,24 @@
 <?php
 include_once "../../configuracion.php";
 include_once "../Estructura/nav.php";
-$abmUsuario=new AbmUsuario();
-$listaUsuarios=$abmUsuario->buscar(null);
+
+$abmUsuario = new AbmUsuario();
+$listaUsuarios = $abmUsuario->buscar(null);
 
 ?>
-<div class="container-fluid d-flex align-items-center justify-content-center full-height">
-    <div class="text-center">
-    <?php
-            if (count($listaUsuarios) > 0) {
-                echo "<table class='table text-center'>
-                            <thead class='table-primary'>
-                                <tr>
-                                    <th colspan='8' class='table-dark text-center fs-4'>Usuarios</th>
-                                </tr>
+<div class="container-fluid py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="my-2">Usuarios</h4>
+                </div>
+                <div class="card-body">
+                    <?php
+                    if (count($listaUsuarios) > 0) {
+                        echo "<div class='table-responsive'>";
+                        echo "<table class='table table-bordered table-striped text-center'>";
+                        echo "<thead class='table-primary'>
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombre</th>
@@ -23,48 +28,48 @@ $listaUsuarios=$abmUsuario->buscar(null);
                                     <th>Modificar roles</th>
                                     <th>Dar de baja</th>
                                 </tr>
-                            </thead>";
-                foreach($listaUsuarios as $unusuario){
-                    echo "<tr class='align-middle'>";
-                    echo "<td>" . $unusuario->getId() . "<input type='hidden' name='idusuario' value='" . $unusuario->getId() . "'></td>";
-                    echo "<td>". $unusuario->getNombre() ."";
-                    echo "<td>". $unusuario->getMail(). "</td>";
-                    //habilitado o deshabilitado
-                    $estaHabilitado = is_null($unusuario->getDeshabilitado());
-                    echo "<td class='col-2 " . ($estaHabilitado ? "text-success" : "text-danger") . "'>" . 
-                            ($estaHabilitado ? 'Activo' : 'Deshabilitado desde: ' . $unusuario->getDeshabilitado()) . 
-                            "<input type='hidden' name='usdeshabilitado' value='".$unusuario->getDeshabilitado()."'></td>";
-                    //lista de roles
-                    echo "<td>";
-                    $objUsuarioRol = new AbmUsuarioRol;
-                    $arrayUserRol = $objUsuarioRol->buscar(['idusuario'=>$unusuario->getId()]);
-                    if (count($arrayUserRol) > 0) {
-                        $i = 0;
-                        foreach ($arrayUserRol as $unRol) {
-                            $nombreRol = $unRol->getObjRol()->getDescripcion();
-                            echo $nombreRol;
-                            if ($i + 1 < count($arrayUserRol)) {
-                                echo ", ";
+                              </thead>
+                              <tbody>";
+                        foreach ($listaUsuarios as $unusuario) {
+                            $estaHabilitado = is_null($unusuario->getDeshabilitado());
+                            echo "<tr class='align-middle'>";
+                            echo "<td>{$unusuario->getId()}<input type='hidden' name='idusuario' value='{$unusuario->getId()}'></td>";
+                            echo "<td>{$unusuario->getNombre()}</td>";
+                            echo "<td>{$unusuario->getMail()}</td>";
+                            echo "<td class='col-2 " . ($estaHabilitado ? "text-success" : "text-danger") . "'>" . 
+                                    ($estaHabilitado ? 'Activo' : 'Deshabilitado desde: ' . $unusuario->getDeshabilitado()) . 
+                                    "<input type='hidden' name='usdeshabilitado' value='{$unusuario->getDeshabilitado()}'></td>";
+                            echo "<td>";
+                            $objUsuarioRol = new AbmUsuarioRol;
+                            $arrayUserRol = $objUsuarioRol->buscar(['idusuario' => $unusuario->getId()]);
+                            if (count($arrayUserRol) > 0) {
+                                $i = 0;
+                                foreach ($arrayUserRol as $unRol) {
+                                    $nombreRol = $unRol->getObjRol()->getDescripcion();
+                                    echo $nombreRol;
+                                    if ($i + 1 < count($arrayUserRol)) {
+                                        echo ", ";
+                                    }
+                                    $i++;
+                                }
                             }
-                            $i++;
+                            echo "</td>";
+                            echo "<td><a href='./rolesUsuarios.php'><button class='btn btn-primary'>Administrar Roles</button></a></td>";
+                            if ($estaHabilitado) {
+                                echo "<td><button type='button' class='btn btn-danger' onclick='confirmarBaja(" . $unusuario->getId() . ")'>Dar de baja</button></td>";
+                            } else {
+                                echo "<td><button type='button' class='btn btn-success' onclick='habilitarUsuario(" . $unusuario->getId() . ")'>Habilitar</button></td>";
+                            }
+                            echo "</tr>";
                         }
-                    }
-                    echo "</td>";
-                    //modificar roles ->boton que lleve a modificar roles
-                    echo "<td><a href='./rolesUsuarios.php'><button class='btn btn-primary'>Administrar Roles</button></td>";
-                    //dar de baja->boton 
-                    if ($estaHabilitado) {
-                        echo "<td><button type='button' class='btn btn-danger' onclick='confirmarBaja(" . $unusuario->getId() . ")'>Dar de baja</button></td>";
+                        echo "</tbody></table></div>";
                     } else {
-                        echo "<td><button type='button' class='btn btn-success' onclick='habilitarUsuario(" . $unusuario->getId() . ")'>Habilitar</button></td>";
+                        echo "<h2 class='text-center text-primary'>No se encontraron usuarios</h2>";
                     }
-                    echo "</tr>";
-                }
-                echo "</table>";
-            } else {
-                echo "<h2 class='text-center text-primary'>No se encontró usuarios</h2>";
-            }
-            ?>
+                    ?>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
