@@ -41,14 +41,19 @@ $listaRoles = $objRol->buscar(null);
             echo "<input type='hidden' name='idusuario' value='{$usuario->getId()}'>";
             foreach ($listaRoles as $rol) {
                 $checked = in_array($rol->getId(), $rolesUsuarioIds) ? "checked" : "";
+                $disabled = ($_SESSION['idusuario'] == $usuario->getId() && $rol->getDescripcion() == 'Administrador') ? "disabled" : "";
                 echo "<div class='form-check'>";
-                echo "<input class='form-check-input' type='checkbox' name='roles[]' value='{$rol->getId()}' $checked>";
+                echo "<input class='form-check-input' type='checkbox' name='roles[]' value='{$rol->getId()}' $checked $disabled>";
                 echo "<label class='form-check-label'>{$rol->getDescripcion()}</label>";
                 echo "</div>";
+                // Añadir un campo oculto para mantener el rol de Administrador si el checkbox está deshabilitado
+                if ($disabled) {
+                    echo "<input type='hidden' name='roles[]' value='{$rol->getId()}'>";
+                }
             }
             echo "</td>";
             echo "<td>";
-            echo "<button type='submit' class='btn btn-primary'>Actualizar</button>";
+            echo "<button type='submit' class='btn btn-primary btnActualizarRoles'>Actualizar</button>";
             echo "</form>";
             echo "</td>";
             echo "</tr>";
@@ -60,7 +65,7 @@ $listaRoles = $objRol->buscar(null);
     ?>
     </div>
 </div>
-
+<script src="../Js/editarRolesUsuarioss.js"></script>
 <?php
 include_once "../Estructura/footer.php";
 ?>

@@ -4,6 +4,7 @@ include_once "../../configuracion.php";
 $objUsuarioRol = new AbmUsuarioRol();
 $datos=data_submitted();
 var_dump($datos);
+$resp=false;
 if (isset($datos['idusuario'])) {
     $idusuario = $datos['idusuario'];
     $rolesSeleccionados = isset($_POST['roles']) ? $_POST['roles'] : [];
@@ -29,6 +30,7 @@ if (isset($datos['idusuario'])) {
             $objUsuarioRol->agregarRol($idusuario, $rolId);
         }
     }
+    $resp=true;
 }
-
+echo json_encode($resp);
 ?>
