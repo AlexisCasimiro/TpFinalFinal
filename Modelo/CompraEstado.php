@@ -126,8 +126,10 @@ class CompraEstado{
         $baseDatos=new BaseDatos();
         $idCompra=$this->getObjCompra()->getId();
         $idCompraEstadoTipo=$this->getObjCompraEstadoTipo()->getId();
+        date_default_timezone_set('America/Argentina/Buenos_Aires');
+        $fechaInicio = date('Y-m-d H:i:s');
         $sql="INSERT INTO compraestado (idcompra,idcompraestadotipo,cefechaini,cefechafin)
-        VALUES ($idCompra,$idCompraEstadoTipo,'".$this->getFechaInicio()."','".$this->getFechaFin()."');"; 
+        VALUES ($idCompra,$idCompraEstadoTipo,'".$fechaInicio."','".$this->getFechaFin()."');"; 
         if($baseDatos->Iniciar()){
             if($baseDatos->Ejecutar($sql)){
                 $salida=true;

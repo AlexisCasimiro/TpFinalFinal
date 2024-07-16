@@ -101,7 +101,7 @@ class Compra{
         $idUsuario=$this->getUsuario()->getId();
         
         $sql="INSERT INTO compra (cofecha,idusuario)
-        VALUES ('".$this->getCoFecha()."',$idUsuario);"; 
+        VALUES (NULL,$idUsuario);"; 
         
         if($baseDatos->Iniciar()){
             if($baseDatos->Ejecutar($sql)){
