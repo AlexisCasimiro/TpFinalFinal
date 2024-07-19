@@ -18,13 +18,13 @@ if ($correcto) {
     </div>";
 }
 
-// Crear instancias de las clases ABM
+// Creo los ABM
 $abmCompra = new abmCompra();
 $abmCompraEstado = new abmCompraEstado();
 $abmCompraItem = new abmCompraItem();
 $abmProducto = new abmProducto();
 
-// Obtener las compras del usuario
+// Obtengo la compra en estado carrito que tiene el cliente
 $compras = $abmCompra->buscar(['idusuario' => $_SESSION['idusuario']]);
 $productos = [];
 $totalCarrito = 0;
@@ -50,10 +50,11 @@ if (!empty($compras)) {
                         'idproducto' => $producto->getIdProducto(),
                         'pronombre' => $producto->getNombre(),
                         'prodetalle' => $producto->getDetalle(),
-                        'proimagen' => $producto->getImagen(), // Método para obtener la URL de la imagen
+                        'proimagen' => $producto->getImagen(),
                         'precio' => $producto->getPrecio(),
                         'cicantidad' => $cantidad,
                         'precioTotal' => $precioTotal,
+                        'stock' => $producto->getCantStock(),
                     ];
                 }
             }
@@ -86,16 +87,16 @@ if (!empty($compras)) {
                         <td>
                             <div class="input-group">
                                 <button class="btn btn-outline-secondary restarCantidad" type="button" data-idproducto="<?php echo ($producto['idproducto']); ?>">-</button>
-                                <input type="number" name="cantidad" min="1" value="<?php echo ($producto['cicantidad']); ?>" class="form-control cantidad-input" data-idproducto="<?php echo ($producto['idproducto']); ?>" readonly>
+                                <input type="number" name="cantidad" min="1" value="<?php echo ($producto['cicantidad']); ?>" class="form-control cantidad-input" data-idproducto="<?php echo ($producto['idproducto']); ?>" max="<?php echo ($producto['stock']); ?>" readonly>
                                 <button class="btn btn-outline-secondary sumarCantidad" type="button" data-idproducto="<?php echo ($producto['idproducto']); ?>">+</button>
                             </div>
                         </td>
-                        <td class="precio-total">$<?php echo number_format($producto['precioTotal'], 2); ?> US</td>
+                        <td class="precio-total"><?php echo number_format($producto['precioTotal'], 2); ?> US</td>
                     </tr>
                 <?php endforeach; ?>
                 <tr>
                     <td colspan="5" class="text-end"><strong>Total del Carrito:</strong></td>
-                    <td><strong id="total-carrito">$<?php echo number_format($totalCarrito, 2); ?> US</strong></td>
+                    <td><strong id="total-carrito"><?php echo number_format($totalCarrito, 2); ?> US</strong></td>
                 </tr>
             </tbody>
         </table>
