@@ -31,21 +31,20 @@ $(document).ready(function() {
         });
     }
 
-    // Manejar el clic en el botón de sumar
+    // Logica al hacer click en el boton de sumar
     $('.sumarCantidad').click(function() {
         var idproducto = $(this).data('idproducto');
         var inputCantidad = $('.cantidad-input[data-idproducto="' + idproducto + '"]');
-        var maxCantidad = parseInt(inputCantidad.attr('max')); // Obtener el valor máximo del atributo max
+        var maxCantidad = parseInt(inputCantidad.attr('max')); 
         var nuevaCantidad = parseInt(inputCantidad.val()) + 1;
 
-        // Asegúrate de que la nueva cantidad no exceda el valor máximo
         if (nuevaCantidad <= maxCantidad) {
             inputCantidad.val(nuevaCantidad);
             actualizarCantidad(idproducto, nuevaCantidad);
         }
     });
 
-    // Manejar el clic en el botón de restar
+    // Logica al hacer click en el boton de restar
     $('.restarCantidad').click(function() {
         var idproducto = $(this).data('idproducto');
         var inputCantidad = $('.cantidad-input[data-idproducto="' + idproducto + '"]');

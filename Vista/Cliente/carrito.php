@@ -6,14 +6,14 @@ include_once "../Estructura/nav.php";
 $error = isset($_GET['error']) ? $_GET['error'] : null;
 $correcto = isset($_GET['correcto']) ? $_GET['correcto'] : null;
 if ($error) {
-    echo "<div class='alert alert-danger alert-dismissible' role='alert'>
-    <div>No se pudo agregar el producto al carrito</div>
+    echo "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+    <strong>Error:</strong> No se pudo agregar el producto al carrito.
     <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
     </div>";
 }
 if ($correcto) {
-    echo "<div class='alert alert-success alert-dismissible' role='alert'>
-    <div>Se agregó correctamente el producto al carrito</div>
+    echo "<div class='alert alert-success alert-dismissible fade show' role='alert'>
+    <strong>Éxito:</strong> Se agregó correctamente el producto al carrito.
     <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
     </div>";
 }
@@ -64,10 +64,10 @@ if (!empty($compras)) {
 ?>
 
 <div class="container mt-5">
-    <h2>Carrito de Compras</h2>
+    <h2 class="mb-4">Carrito de Compras</h2>
     <?php if (count($productos) > 0): ?>
-        <table class="table table-striped">
-            <thead>
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark">
                 <tr>
                     <th>Producto</th>
                     <th>Descripción</th>
@@ -75,6 +75,7 @@ if (!empty($compras)) {
                     <th>Precio Unitario</th>
                     <th>Cantidad</th>
                     <th>Precio Total</th>
+                    <th>Eliminar</th>
                 </tr>
             </thead>
             <tbody>
@@ -82,8 +83,8 @@ if (!empty($compras)) {
                     <tr>
                         <td><?php echo ($producto['pronombre']); ?></td>
                         <td><?php echo ($producto['prodetalle']); ?></td>
-                        <td><img src="../imagenes/<?php echo ($producto['proimagen']); ?>" alt="<?php echo ($producto['pronombre']); ?>" style="width: 100px;"></td>
-                        <td><?php echo number_format($producto['precio'], 2); ?> €</td>
+                        <td><img src="../imagenes/<?php echo ($producto['proimagen']); ?>" alt="<?php echo ($producto['pronombre']); ?>" class="img-fluid" style="max-width: 100px;"></td>
+                        <td>$<?php echo number_format($producto['precio'], 2); ?> US</td>
                         <td>
                             <div class="input-group">
                                 <button class="btn btn-outline-secondary restarCantidad" type="button" data-idproducto="<?php echo ($producto['idproducto']); ?>">-</button>
@@ -91,12 +92,15 @@ if (!empty($compras)) {
                                 <button class="btn btn-outline-secondary sumarCantidad" type="button" data-idproducto="<?php echo ($producto['idproducto']); ?>">+</button>
                             </div>
                         </td>
-                        <td class="precio-total"><?php echo number_format($producto['precioTotal'], 2); ?> US</td>
+                        <td class="precio-total">$<?php echo number_format($producto['precioTotal'], 2); ?> US</td>
+                        <td>
+                            <button class="btn btn-danger eliminarProducto" data-idproducto="<?php echo ($producto['idproducto']); ?>"><i class="bi bi-x-lg"></i></button>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
                 <tr>
-                    <td colspan="5" class="text-end"><strong>Total del Carrito:</strong></td>
-                    <td><strong id="total-carrito"><?php echo number_format($totalCarrito, 2); ?> US</strong></td>
+                    <td colspan="6" class="text-end"><strong>Total del Carrito:</strong></td>
+                    <td><strong id="total-carrito">$<?php echo number_format($totalCarrito, 2); ?> US</strong></td>
                 </tr>
             </tbody>
         </table>
@@ -110,3 +114,4 @@ include_once "../Estructura/footer.php";
 ?>
 
 <script src="../Js/cambiarStockCarrito.js"></script>
+<script src="../Js/eliminarProductoCarro.js"></script>
