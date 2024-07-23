@@ -64,48 +64,54 @@ if (!empty($compras)) {
 ?>
 
 <div class="container mt-5">
-    <h2 class="mb-4">Carrito de Compras</h2>
+    <h2 class="mb-4 text-center text-primary">Carrito de Compras</h2>
     <?php if (count($productos) > 0): ?>
-        <table class="table table-striped table-bordered">
-            <thead class="table-dark">
-                <tr>
-                    <th>Producto</th>
-                    <th>Descripción</th>
-                    <th>Imagen</th>
-                    <th>Precio Unitario</th>
-                    <th>Cantidad</th>
-                    <th>Precio Total</th>
-                    <th>Eliminar</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($productos as $producto): ?>
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered align-middle">
+                <thead class="table-dark">
                     <tr>
-                        <td><?php echo ($producto['pronombre']); ?></td>
-                        <td><?php echo ($producto['prodetalle']); ?></td>
-                        <td><img src="../imagenes/<?php echo ($producto['proimagen']); ?>" alt="<?php echo ($producto['pronombre']); ?>" class="img-fluid" style="max-width: 100px;"></td>
-                        <td>$<?php echo number_format($producto['precio'], 2); ?> US</td>
-                        <td>
-                            <div class="input-group">
-                                <button class="btn btn-outline-secondary restarCantidad" type="button" data-idproducto="<?php echo ($producto['idproducto']); ?>">-</button>
-                                <input type="number" name="cantidad" min="1" value="<?php echo ($producto['cicantidad']); ?>" class="form-control cantidad-input" data-idproducto="<?php echo ($producto['idproducto']); ?>" max="<?php echo ($producto['stock']); ?>" readonly>
-                                <button class="btn btn-outline-secondary sumarCantidad" type="button" data-idproducto="<?php echo ($producto['idproducto']); ?>">+</button>
-                            </div>
-                        </td>
-                        <td class="precio-total">$<?php echo number_format($producto['precioTotal'], 2); ?> US</td>
-                        <td>
-                            <button class="btn btn-danger eliminarProducto" data-idproducto="<?php echo ($producto['idproducto']); ?>"><i class="bi bi-x-lg"></i></button>
-                        </td>
+                        <th>Producto</th>
+                        <th>Descripción</th>
+                        <th>Imagen</th>
+                        <th>Precio Unitario</th>
+                        <th>Cantidad</th>
+                        <th>Precio Total</th>
+                        <th>Eliminar</th>
                     </tr>
-                <?php endforeach; ?>
-                <tr>
-                    <td colspan="6" class="text-end"><strong>Total del Carrito:</strong></td>
-                    <td><strong id="total-carrito">$<?php echo number_format($totalCarrito, 2); ?> US</strong></td>
-                </tr>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php foreach ($productos as $producto): ?>
+                        <tr>
+                            <td><?php echo ($producto['pronombre']); ?></td>
+                            <td><?php echo ($producto['prodetalle']); ?></td>
+                            <td><img src="../imagenes/<?php echo ($producto['proimagen']); ?>" alt="<?php echo ($producto['pronombre']); ?>" class="img-fluid rounded" style="max-width: 100px;"></td>
+                            <td><?php echo number_format($producto['precio'], 2); ?> €</td>
+                            <td>
+                                <div class="input-group">
+                                    <button class="btn btn-outline-secondary restarCantidad" type="button" data-idproducto="<?php echo ($producto['idproducto']); ?>">-</button>
+                                    <input type="number" name="cantidad" min="1" value="<?php echo ($producto['cicantidad']); ?>" class="form-control text-center cantidad-input" data-idproducto="<?php echo ($producto['idproducto']); ?>" max="<?php echo ($producto['stock']); ?>" readonly>
+                                    <button class="btn btn-outline-secondary sumarCantidad" type="button" data-idproducto="<?php echo ($producto['idproducto']); ?>">+</button>
+                                </div>
+                            </td>
+                            <td class="precio-total"><?php echo number_format($producto['precioTotal'], 2); ?> €</td>
+                            <td>
+                                <button class="btn btn-danger eliminarProducto" data-idproducto="<?php echo ($producto['idproducto']); ?>"><i class="bi bi-x-lg"></i></button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    <tr>
+                        <td colspan="6" class="text-end"><strong>Total del Carrito:</strong></td>
+                        <td><strong id="total-carrito"><?php echo number_format($totalCarrito, 2); ?> €</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     <?php else: ?>
-        <div class="alert alert-info">El carrito está vacío.</div>
+        <div class="alert alert-info text-center">
+            El carrito está vacío.
+            <br><br>
+            <a href="./productos.php" class="btn btn-primary"><i class="bi bi-arrow-right-circle"></i> Ver productos</a>
+        </div>
     <?php endif; ?>
 </div>
 

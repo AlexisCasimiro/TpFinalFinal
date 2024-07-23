@@ -7,7 +7,7 @@ $(document).ready(function() {
 
     function eliminarProducto(idproducto) {
         $.ajax({
-            url: '../Accion/eliminarProductoCarrito.php', // Asegúrate de crear este archivo
+            url: '../Accion/eliminarProductoCarrito.php', 
             type: 'POST',
             data: { idproducto: idproducto },
             dataType: 'text',
