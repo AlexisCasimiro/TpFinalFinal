@@ -11,9 +11,9 @@ if (isset($datos['idproducto'])) {
     $abmCompraItem = new abmCompraItem();
 
     $compras = $abmCompra->buscar(['idusuario' => $idusuario]);
-    if (!empty($compras)) {
-        foreach ($compras as $compra) {
-            $idcompra = $compra->getId();
+    $ultimaCompra=end($compras);
+    if (!empty($ultimaCompra)) {
+            $idcompra = $ultimaCompra->getId();
             $compraEstados = $abmCompraEstado->buscar(['idcompra' => $idcompra, 'idcompraestadotipo' => 5]);
             if (!empty($compraEstados)) {
                 $items = $abmCompraItem->buscar(['idcompra' => $idcompra, 'idproducto' => $idproducto]);
@@ -28,9 +28,7 @@ if (isset($datos['idproducto'])) {
                     echo json_encode(['success' => true]);
                     exit;
                 }
-                break;
             }
-        }
     }
 
     echo json_encode(['success' => false, 'message' => 'Producto no encontrado en el carrito']);

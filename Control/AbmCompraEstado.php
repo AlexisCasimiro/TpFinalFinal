@@ -40,25 +40,13 @@ class AbmCompraEstado{
      * @param array $datos
      * @return CompraEstado
      */
-    private function cargarObjetoConClave($datos){
-        $obj=null;
-        if(isset($datos['idcompraestado'])){
-            // creo al obj compra
-            $objC=new Compra();
-            $objC->setId($datos['idusario']);
-            $objC->cargar();
-            
-            // creo al obj compraestadotipo
-            $objCET=new CompraEstadoTipo();
-            $objCET->setId($datos['idcompraestadotipo']);
-            $objCET->cargar();
-
-            // creo al obj compraEstado
-            $obj=new CompraEstado();
-            $obj->setear($datos['idcompraestado'],$objC,$objCET,$datos['cefechaini'],$datos['cefechafin']);
-
-        }// fin if 
-        return $obj;
+    private function cargarObjetoConClave($param){
+        $objCompraEstado = null;
+        if (isset($param['idcompraestado']) ){
+            $objCompraEstado = new CompraEstado();
+            $objCompraEstado->setear($param['idcompraestado'], null, null, null, null);
+        }
+        return $objCompraEstado;
 
     }// fin function 
 
@@ -71,8 +59,7 @@ class AbmCompraEstado{
         $resp=false;
         
         //var_dump(isset($datos['cefechafin'])); // OJO!!!! isset si la variable es null, dará falso 
-        if(array_key_exists('idcompraestado',$datos) && array_key_exists('idcompraestadotipo',$datos)
-        && array_key_exists('idcompra',$datos) && array_key_exists('cefechaini',$datos) && array_key_exists('cefechafin',$datos)){
+        if(array_key_exists('idcompraestado',$datos)){
             $resp=true; 
         }
         
@@ -177,7 +164,22 @@ class AbmCompraEstado{
 
     }// fin funcion     
 
-   
+    /** Permite finalizar un objeto 
+     * @param ARRAY $param
+     * @return BOOLEAN 
+    */
+    public function finalizar($param){
+        $resp = false;
+        if ($this->setadosCamposClaves($param)){
+            echo "entro seteadoscamposclaves";
+            $objCompraEstado = $this->cargarObjetoConClave($param);
+            if ($objCompraEstado!=null and $objCompraEstado->finalizar()){
+                echo "entro finalizar";
+                $resp = true;
+            }
+        }
+        return $resp;
+    }
 
 }// fin clase 
 

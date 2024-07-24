@@ -33,8 +33,8 @@ if (!empty($compras)) {
     foreach ($compras as $compra) {
         $idcompra = $compra->getId();
         // Verificar el estado de la compra
-        $compraEstados = $abmCompraEstado->buscar(['idcompra' => $idcompra, 'idcompraestadotipo' => 5]);
-        if (!empty($compraEstados)) {
+        $compraEstados = $abmCompraEstado->buscar(['idcompra' => $idcompra]);
+        if (!empty($compraEstados) && (count($compraEstados) == 1)) {
             // Obtener los items de la compra
             $items = $abmCompraItem->buscar(['idcompra' => $idcompra]);
             foreach ($items as $item) {
@@ -106,6 +106,11 @@ if (!empty($compras)) {
                 </tbody>
             </table>
         </div>
+        <!-- Botón para finalizar la compra -->
+        <form action="../Accion/finalizarCompra.php" method="post" class="text-end mt-3">
+            <input type="hidden" name="idcompra" value="<?php echo $idcompra; ?>">
+            <button type="submit" class="btn btn-success">Finalizar Compra</button>
+        </form>
     <?php else: ?>
         <div class="alert alert-info text-center">
             El carrito está vacío.

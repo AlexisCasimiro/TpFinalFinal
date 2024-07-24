@@ -1,8 +1,8 @@
 <?php
 include_once "../../configuracion.php";
-$datos=data_submitted();
+$datos = data_submitted();
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($datos['idproducto']) && isset($datos['cantidad'])) {
+if (isset($datos['idproducto']) && isset($datos['cantidad'])) {
     $idproducto = $datos['idproducto'];
     $nuevaCantidad = $datos['cantidad'];
 
@@ -14,13 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($datos['idproducto']) && isset
     $abmCompraItem = new abmCompraItem();
     $abmProducto = new abmProducto();
 
-    // obtengo el producto y luego valido la cantidad
-    $producto = $abmProducto->buscar(['idproducto' => $idproducto]);
-    if (empty($producto)) {
-        echo json_encode(['success' => false, 'message' => 'Producto no encontrado']);
-        exit;
-    }
-    $producto = $producto[0];
+    // Obtener el producto y luego validar la cantidad
+    $producto = $abmProducto->buscar(['idproducto' => $idproducto])[0];
     $stockDisponible = $producto->getCantStock();
 
     if ($nuevaCantidad > $stockDisponible) {
@@ -28,33 +23,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($datos['idproducto']) && isset
         exit;
     }
 
-    // Obtener la compra en estado "carrito" del usuario
+    // Obtener las compras en estado "carrito" del usuario
     $compras = $abmCompra->buscar(['idusuario' => $idusuario]);
-    if (!empty($compras)) {
-        foreach ($compras as $compra) {
-            $idcompra = $compra->getId();
-            $compraEstados = $abmCompraEstado->buscar(['idcompra' => $idcompra, 'idcompraestadotipo' => 5]);
-            if (!empty($compraEstados)) {
-                // Obtener el item de la compra correspondiente al producto
-                $items = $abmCompraItem->buscar(['idcompra' => $idcompra, 'idproducto' => $idproducto]);
-                if (!empty($items)) {
-                    $paramItem=[];
-                    $item = $items[0];
-                    $item->setCantidad($nuevaCantidad);
-                    $paramItem['idcompraitem']=$item->getId();
-                    $paramItem['idcompra']=$item->getObjCompra()->getId();
-                    $paramItem['idproducto']=$item->getObjProducto()->getIdProducto();
-                    $paramItem['cicantidad']=$item->getCantidad();
-                    //if(isset($datos['idcompraitem'],$datos['idproducto'],$datos['idcompra'],$datos['cicantidad'])){
-                    $abmCompraItem->modificacion($paramItem);
-                }
-                break;
-            }
-        }
-    }
+    $ultimaCompra=end($compras);
 
-    echo json_encode(['success' => true]);
+    if ($ultimaCompra) {
+        $idcompra = $ultimaCompra->getId();
+        // Obtener el item de la compra correspondiente al producto
+        $items = $abmCompraItem->buscar(['idcompra' => $idcompra, 'idproducto' => $idproducto]);
+        if (!empty($items)) {
+            $paramItem = [];
+            $item = $items[0];
+            $item->setCantidad($nuevaCantidad);
+            $paramItem['idcompraitem'] = $item->getId();
+            $paramItem['idcompra'] = $item->getObjCompra()->getId();
+            $paramItem['idproducto'] = $item->getObjProducto()->getIdProducto();
+            $paramItem['cicantidad'] = $item->getCantidad();
+            $abmCompraItem->modificacion($paramItem);
+
+            echo json_encode(['success' => true]);
+            exit;
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Item no encontrado']);
+            exit;
+        }
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Compra en estado carrito no encontrada']);
+        exit;
+    }
 } else {
-    echo json_encode(['success' => false, 'message' => 'Invalid request']);
+    echo json_encode(['success' => false, 'message' => 'Solicitud inválida']);
 }
 ?>

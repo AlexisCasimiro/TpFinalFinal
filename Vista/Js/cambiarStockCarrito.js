@@ -16,7 +16,6 @@ $(document).ready(function() {
                     var jsonEndIndex = response.lastIndexOf('}') + 1;
                     var jsonString = response.substring(jsonStartIndex, jsonEndIndex);
                     jsonResponse = JSON.parse(jsonString);
-
                     if (jsonResponse.success) {
                         location.reload();
                     } else {

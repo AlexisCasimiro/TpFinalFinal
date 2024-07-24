@@ -246,6 +246,27 @@ class CompraEstado{
         return $arrayComprasEstados; 
     }// fin function listar
 
+    /**
+     * METODO FINALIZAR EL ESTADO DE LA COMPRA
+     * @return BOOLEAN
+     */
+    public function finalizar(){
+        $resp = false;
+        $base = new BaseDatos();
+        date_default_timezone_set('America/Argentina/Buenos_Aires');
+        $fechaFin = date('Y-m-d H:i:s');
+        $sql = "UPDATE compraestado SET cefechafin='" . $fechaFin . "' WHERE idcompraestado=".$this->getId();
+        if ($base->Iniciar()) {
+            if ($base->Ejecutar($sql)) {
+                $resp = true;
+            } else {
+                $this->setMensaje("CompraEstado->finalizar: ".$base->getError());
+            }
+        } else {
+            $this->setMensaje("CompraEstado->finalizar: ".$base->getError());
+        }
+        return $resp;
+    }
 
 
 
