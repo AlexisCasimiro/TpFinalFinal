@@ -171,10 +171,8 @@ class AbmCompraEstado{
     public function finalizar($param){
         $resp = false;
         if ($this->setadosCamposClaves($param)){
-            echo "entro seteadoscamposclaves";
             $objCompraEstado = $this->cargarObjetoConClave($param);
             if ($objCompraEstado!=null and $objCompraEstado->finalizar()){
-                echo "entro finalizar";
                 $resp = true;
             }
         }

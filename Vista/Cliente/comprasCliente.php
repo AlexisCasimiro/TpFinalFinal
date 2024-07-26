@@ -5,6 +5,8 @@ include_once "../Estructura/nav.php";
 // Creo los ABM
 $abmCompra = new abmCompra();
 $abmCompraEstado = new abmCompraEstado();
+$abmCompraItem = new abmCompraItem();
+$abmProducto = new abmProducto();
 
 // Obtengo las compras del usuario
 $idusuario = $_SESSION['idusuario'];
@@ -16,16 +18,26 @@ if (!empty($compras)) {
     foreach ($compras as $compra) {
         $idcompra = $compra->getId();
         $compraEstados = $abmCompraEstado->buscar(['idcompra' => $idcompra]);
+        $productos = [];
         if (!empty($compraEstados)) {
             foreach ($compraEstados as $estado) {
                 $estadoTipo = $estado->getObjCompraEstadoTipo()->getId();
                 if (in_array($estadoTipo, [1, 2, 3, 4])) { // Estados: iniciada (1), aceptada (2), cancelada (3), enviada (4)
-                    $comprasFiltradas[] = [
-                        'idcompra' => $idcompra,
-                        'fecha' => $compra->getCoFecha(),
-                        'estado' => $estado->getObjCompraEstadoTipo()->getCetDescripcion(),
-                        'estadoTipo' => $estadoTipo
-                    ];
+                    // Obtener los items de la compra
+                    $items = $abmCompraItem->buscar(['idcompra' => $idcompra]);
+                    foreach ($items as $item) {
+                        $producto = $abmProducto->buscar(['idproducto' => $item->getObjProducto()->getIdProducto()]);
+                        if (!empty($producto)) {
+                            $productos[] = $producto[0]->getNombre() . ' x' . $item->getCantidad();
+                        }
+                    }
+
+                    $comprasFiltradas[$idcompra]['idcompra'] = $idcompra;
+                    $comprasFiltradas[$idcompra]['fecha'] = $compra->getCoFecha();
+                    $comprasFiltradas[$idcompra]['estado'][$estadoTipo] = $estado->getFechaInicio();
+                    $comprasFiltradas[$idcompra]['productos'] = implode(", ", $productos);
+                    $comprasFiltradas[$idcompra]['estadoTipo'] = $estadoTipo;
+                    $comprasFiltradas[$idcompra]['estadoDescripcion'] = $estado->getObjCompraEstadoTipo()->getDescripcion();
                 }
             }
         }
@@ -40,18 +52,26 @@ if (!empty($compras)) {
             <table class="table table-hover table-bordered align-middle">
                 <thead class="table-dark">
                     <tr>
-                        <th>ID Compra</th>
+                        <th>Productos</th>
                         <th>Fecha</th>
-                        <th>Estado</th>
+                        <th>Iniciada</th>
+                        <th>Aceptada</th>
+                        <th>Enviada</th>
+                        <th>Cancelada</th>
+                        <th>Estado actual</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($comprasFiltradas as $compra): ?>
                         <tr>
-                            <td><?php echo htmlspecialchars($compra['idcompra']); ?></td>
+                            <td><?php echo htmlspecialchars($compra['productos']); ?></td>
                             <td><?php echo htmlspecialchars($compra['fecha']); ?></td>
-                            <td><?php echo htmlspecialchars($compra['estado']); ?></td>
+                            <td><?php echo htmlspecialchars(isset($compra['estado'][1]) ? $compra['estado'][1] : ''); ?></td>
+                            <td><?php echo htmlspecialchars(isset($compra['estado'][2]) ? $compra['estado'][2] : ''); ?></td>
+                            <td><?php echo htmlspecialchars(isset($compra['estado'][4]) ? $compra['estado'][4] : ''); ?></td>
+                            <td><?php echo htmlspecialchars(isset($compra['estado'][3]) ? $compra['estado'][3] : ''); ?></td>
+                            <td><?php echo htmlspecialchars($compra['estadoDescripcion']); ?></td>
                             <td>
                                 <?php if ($compra['estadoTipo'] == 1): // Estado iniciada ?>
                                     <button class="btn btn-danger cancelarCompra" data-idcompra="<?php echo htmlspecialchars($compra['idcompra']); ?>">Cancelar</button>

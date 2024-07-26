@@ -19,8 +19,10 @@ if (isset($datos['idcompra'])) {
         $items = $abmCompraItem->buscar(['idcompra' => $idcompra]);
         $stockSuficiente = true;
 
+        $i = 0;
         // Verifico que haya stock suficiente para cada producto
-        foreach ($items as $item) {
+        while ($i < count($items) && $stockSuficiente) {
+            $item = $items[$i];
             $idproducto = $item->getObjProducto()->getIdProducto();
             $producto = $abmProducto->buscar(['idproducto' => $idproducto]);
             if (!empty($producto)) {
@@ -28,10 +30,13 @@ if (isset($datos['idcompra'])) {
                 $cantidad = $item->getCantidad();
                 if ($producto->getCantStock() < $cantidad) {
                     $stockSuficiente = false;
+                    $productoSinStock = $producto;
                 }
             } else {
                 $stockSuficiente = false;
+                $productoSinStock = null;
             }
+            $i++;
         }
 
         if ($stockSuficiente) {
@@ -51,7 +56,7 @@ if (isset($datos['idcompra'])) {
                         $cantidadEnCarrito = $item->getCantidad();
                         $producto = $abmProducto->buscar(['idproducto' => $item->getObjProducto()->getIdProducto()])[0];
                         $stockActual = $producto->getCantStock();
-                        $nuevoStock=$stockActual - $cantidadPedida;
+                        $nuevoStock=$stockActual - $cantidadEnCarrito;
                         //$producto->modificar();
                         $abmProducto->modificacionStock(['idproducto'=>$item->getObjProducto()->getIdProducto(), 'procantstock'=> $nuevoStock]);
                     }
@@ -65,9 +70,8 @@ if (isset($datos['idcompra'])) {
                 exit;
             }
         } else {
-            // Redirigir al carrito con un mensaje de error por falta de stock
-            header("Location: carrito.php?error=stock");
-            exit;
+            // Notifico del producto que no tiene stock
+            header("Location: ../Cliente/carrito.php?productoerror=" . $productoSinStock->getIdProducto());
         }
     } else {
         // Redirigir al carrito con un mensaje de error

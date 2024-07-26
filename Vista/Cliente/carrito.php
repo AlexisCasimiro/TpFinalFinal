@@ -5,6 +5,7 @@ include_once "../Estructura/nav.php";
 // Verificar si hay un parámetro de error en la URL
 $error = isset($_GET['error']) ? $_GET['error'] : null;
 $correcto = isset($_GET['correcto']) ? $_GET['correcto'] : null;
+$productoerror = isset($_GET['productoerror']) ? $_GET['productoerror'] : null;
 if ($error) {
     echo "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
     <strong>Error:</strong> No se pudo agregar el producto al carrito.
@@ -17,7 +18,16 @@ if ($correcto) {
     <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
     </div>";
 }
-
+if(isset($productoerror)){
+    $controlProducto=new AbmProducto();
+    $idProductoSinStock=$_GET['productoerror'];
+    $productoSinStock=$controlProducto->buscar(['idproducto'=>$idProductoSinStock]);
+    var_dump($productoSinStock[0]);
+    echo "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+        <strong>Sin stock:</strong> No hay suficiente stock para el producto: " . $productoSinStock[0]->getNombre() . ".
+        <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+        </div>";
+}
 // Creo los ABM
 $abmCompra = new abmCompra();
 $abmCompraEstado = new abmCompraEstado();
@@ -107,10 +117,13 @@ if (!empty($compras)) {
             </table>
         </div>
         <!-- Botón para finalizar la compra -->
-        <form action="../Accion/finalizarCompra.php" method="post" class="text-end mt-3">
-            <input type="hidden" name="idcompra" value="<?php echo $idcompra; ?>">
-            <button type="submit" class="btn btn-success">Finalizar Compra</button>
-        </form>
+        <div class="text-end mt-3">
+            <button onclick="location.href='./productos.php'" class="btn btn-primary">Ir a tienda</button>
+            <form action="../Accion/finalizarCompra.php" method="post" style="display: inline;">
+                <input type="hidden" name="idcompra" value="<?php echo $idcompra; ?>">
+                <button type="submit" class="btn btn-success">Finalizar Compra</button>
+            </form>
+        </div>
     <?php else: ?>
         <div class="alert alert-info text-center">
             El carrito está vacío.
