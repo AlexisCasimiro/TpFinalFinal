@@ -54,10 +54,7 @@ if (!empty($compras)) {
                     <tr>
                         <th>Productos</th>
                         <th>Fecha</th>
-                        <th>Iniciada</th>
-                        <th>Aceptada</th>
-                        <th>Enviada</th>
-                        <th>Cancelada</th>
+                        <th>Estados</th>
                         <th>Estado actual</th>
                         <th>Acciones</th>
                     </tr>
@@ -67,10 +64,20 @@ if (!empty($compras)) {
                         <tr>
                             <td><?php echo htmlspecialchars($compra['productos']); ?></td>
                             <td><?php echo htmlspecialchars($compra['fecha']); ?></td>
-                            <td><?php echo htmlspecialchars(isset($compra['estado'][1]) ? $compra['estado'][1] : ''); ?></td>
-                            <td><?php echo htmlspecialchars(isset($compra['estado'][2]) ? $compra['estado'][2] : ''); ?></td>
-                            <td><?php echo htmlspecialchars(isset($compra['estado'][4]) ? $compra['estado'][4] : ''); ?></td>
-                            <td><?php echo htmlspecialchars(isset($compra['estado'][3]) ? $compra['estado'][3] : ''); ?></td>
+                            <td>
+                                <?php if (isset($compra['estado'][1])): ?>
+                                    <div>Iniciada: <?php echo htmlspecialchars($compra['estado'][1]); ?></div>
+                                <?php endif; ?>
+                                <?php if (isset($compra['estado'][2])): ?>
+                                    <div>Aceptada: <?php echo htmlspecialchars($compra['estado'][2]); ?></div>
+                                <?php endif; ?>
+                                <?php if (isset($compra['estado'][4])): ?>
+                                    <div>Cancelada: <?php echo htmlspecialchars($compra['estado'][4]); ?></div>
+                                <?php endif; ?>
+                                <?php if (isset($compra['estado'][3])): ?>
+                                    <div>Enviada: <?php echo htmlspecialchars($compra['estado'][3]); ?></div>
+                                <?php endif; ?>
+                            </td>
                             <td><?php echo htmlspecialchars($compra['estadoDescripcion']); ?></td>
                             <td>
                                 <?php if ($compra['estadoTipo'] == 1): // Estado iniciada ?>
@@ -86,37 +93,32 @@ if (!empty($compras)) {
         </div>
     <?php else: ?>
         <div class="alert alert-info text-center">
-            No tienes compras en los estados aceptada, cancelada, iniciada o enviada.
+            No tienes compras
             <br><br>
             <a href="../productos.php" class="btn btn-primary"><i class="bi bi-arrow-right-circle"></i> Ver productos</a>
         </div>
     <?php endif; ?>
 </div>
+<!-- Modal de confirmación -->
+<div class="modal fade" id="confirmCancelModal" tabindex="-1" aria-labelledby="confirmCancelLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmCancelLabel">Confirmar Cancelación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas cancelar esta compra?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger" id="confirmCancelBtn">Sí, cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?php
 include_once "../Estructura/footer.php";
 ?>
-
-<script>
-$(document).ready(function() {
-    $('.cancelarCompra').on('click', function() {
-        const idcompra = $(this).data('idcompra');
-        if (confirm('¿Estás seguro de que deseas cancelar esta compra?')) {
-            $.ajax({
-                type: 'POST',
-                url: 'cancelarCompra.php',
-                data: { idcompra: idcompra },
-                success: function(response) {
-                    const result = JSON.parse(response);
-                    if (result.success) {
-                        alert('Compra cancelada exitosamente');
-                        location.reload();
-                    } else {
-                        alert('Error al cancelar la compra: ' + result.message);
-                    }
-                }
-            });
-        }
-    });
-});
-</script>
+<script src="../Js/cancelarCompra.js"></script>
