@@ -18,13 +18,24 @@ if (isset($datos['idcompra'])) {
         $compra = $compra[0];
         $compraEstados = $abmCompraEstado->buscar(['idcompra' => $idcompra, 'idcompraestadotipo' => 1]); // Estado iniciada
         if (!empty($compraEstados)) {
-            // Cambiar el estado de la compra a "cancelada"
+            $estadoIniciada = $compraEstados[0];
+            // Actualizar la fecha de finalización del estado "iniciada"
+            $paramEstadoIniciada = [
+                'idcompraestado' => $estadoIniciada->getId(),
+                'cefechafin' => date('Y-m-d H:i:s')
+            ];
+            $abmCompraEstado->finalizar($paramEstadoIniciada);
+
+            // Parametros para cambiar el estado de la compra a "cancelada"
             $paramEstado = [
                 'idcompra' => $idcompra,
                 'idcompraestadotipo' => 4, // Estado cancelada
                 'cefechaini' => date('Y-m-d H:i:s'),
                 'cefechafin' => null
             ];
+            // agregar el modificación del estado final de inicial
+            // 
+
             if ($abmCompraEstado->alta($paramEstado)) {
                 // Obtener los items de la compra
                 $items = $abmCompraItem->buscar(['idcompra' => $idcompra]);
@@ -34,8 +45,9 @@ if (isset($datos['idcompra'])) {
                         if (!empty($producto)) {
                             $producto = $producto[0];
                             // Sumar el stock de los productos
-                            $producto->setProCantstock($producto->getProCantstock() + $item->getCantidad());
-                            $abmProducto->modificacion($producto);
+                            $producto->setCantStock($producto->getCantStock() + $item->getCantidad());
+                            // esto está raro
+                            $abmProducto->modificacion(['idproducto' => $item->getObjProducto()->getIdProducto()]);
                         }
                     }
                 }
