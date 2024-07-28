@@ -33,11 +33,10 @@ if (isset($datos['idcompra'])) {
                 'cefechaini' => date('Y-m-d H:i:s'),
                 'cefechafin' => null
             ];
-            // agregar el modificación del estado final de inicial
-            // 
 
             if ($abmCompraEstado->alta($paramEstado)) {
                 // Obtener los items de la compra
+                // lo qeu esta haciendo es sumarle un producto a la compra, no está devolviendo el stock del producto 
                 $items = $abmCompraItem->buscar(['idcompra' => $idcompra]);
                 if (!empty($items)) {
                     foreach ($items as $item) {
@@ -45,9 +44,9 @@ if (isset($datos['idcompra'])) {
                         if (!empty($producto)) {
                             $producto = $producto[0];
                             // Sumar el stock de los productos
-                            $producto->setCantStock($producto->getCantStock() + $item->getCantidad());
+                            $sumarStock = ($producto->getCantStock() + $item->getCantidad());
                             // esto está raro
-                            $abmProducto->modificacion(['idproducto' => $item->getObjProducto()->getIdProducto()]);
+                            $abmProducto->modificacionStock(['idproducto' => $item->getObjProducto()->getIdProducto(), 'procantstock' => $sumarStock]);
                         }
                     }
                 }

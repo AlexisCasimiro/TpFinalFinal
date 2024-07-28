@@ -20,6 +20,7 @@ if (!empty($compras)) {
         $compraEstados = $abmCompraEstado->buscar(['idcompra' => $idcompra]);
         $productos = [];
         if (!empty($compraEstados)) {
+            // despues de cancelar la compra la compra pasa a tener dos estados, por eso al imprimir por pantalla los productos se ven dos veces porque hace dos veces el foreach. Lo que tengo que hacer es modificar eso y despues faltaria poder actualizar el stock de los productos
             foreach ($compraEstados as $estado) {
                 $estadoTipo = $estado->getObjCompraEstadoTipo()->getId();
                 if (in_array($estadoTipo, [1, 2, 3, 4])) { // Estados: iniciada (1), aceptada (2), cancelada (3), enviada (4)
