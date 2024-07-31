@@ -13,18 +13,19 @@ $idusuario = $_SESSION['idusuario'];
 $compras = $abmCompra->buscar(['idusuario' => $idusuario]);
 $comprasFiltradas = [];
 
-// Filtrar las compras por estado
 if (!empty($compras)) {
     foreach ($compras as $compra) {
         $idcompra = $compra->getId();
         $compraEstados = $abmCompraEstado->buscar(['idcompra' => $idcompra]);
         $productos = [];
+        $estadoProcesado = false;
+
         if (!empty($compraEstados)) {
-            // despues de cancelar la compra la compra pasa a tener dos estados, por eso al imprimir por pantalla los productos se ven dos veces porque hace dos veces el foreach. Lo que tengo que hacer es modificar eso y despues faltaria poder actualizar el stock de los productos
+            // Filtrar los estados de la compra y busco solo los que esten en iniciada, aceptada, enviada o cancelada
             foreach ($compraEstados as $estado) {
                 $estadoTipo = $estado->getObjCompraEstadoTipo()->getId();
-                if (in_array($estadoTipo, [1, 2, 3, 4])) { // Estados: iniciada (1), aceptada (2), cancelada (3), enviada (4)
-                    // Obtener los items de la compra
+                if (!$estadoProcesado && in_array($estadoTipo, [1, 2, 3, 4])) {
+                    // Obtener los items de la compra solo una vez
                     $items = $abmCompraItem->buscar(['idcompra' => $idcompra]);
                     foreach ($items as $item) {
                         $producto = $abmProducto->buscar(['idproducto' => $item->getObjProducto()->getIdProducto()]);
@@ -32,18 +33,21 @@ if (!empty($compras)) {
                             $productos[] = $producto[0]->getNombre() . ' x' . $item->getCantidad();
                         }
                     }
-
+                    // Almacenar información de la compra filtrada
                     $comprasFiltradas[$idcompra]['idcompra'] = $idcompra;
                     $comprasFiltradas[$idcompra]['fecha'] = $compra->getCoFecha();
-                    $comprasFiltradas[$idcompra]['estado'][$estadoTipo] = $estado->getFechaInicio();
                     $comprasFiltradas[$idcompra]['productos'] = implode(", ", $productos);
-                    $comprasFiltradas[$idcompra]['estadoTipo'] = $estadoTipo;
                     $comprasFiltradas[$idcompra]['estadoDescripcion'] = $estado->getObjCompraEstadoTipo()->getDescripcion();
+                    
+                    $estadoProcesado = true;
                 }
+                $comprasFiltradas[$idcompra]['estadoTipo'] = $estadoTipo;
+                $comprasFiltradas[$idcompra]['estado'][$estadoTipo] = $estado->getFechaInicio();
             }
         }
     }
 }
+
 ?>
 
 <div class="container mt-5">
