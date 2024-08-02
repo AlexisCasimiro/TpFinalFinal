@@ -25,7 +25,6 @@ $compras = $abmCompra->buscar(null);
                         <th>Productos</th>
                         <th>Estado Actual</th>
                         <th>Fechas de Estados</th>
-                        <th>Modificar Compra</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -49,6 +48,7 @@ $compras = $abmCompra->buscar(null);
                         $estadoDescripcion = $estadoActual ? $estadoActual->getObjCompraEstadoTipo()->getDescripcion() : 'Sin estado';
                         $estadoTipo = $estadoActual ? $estadoActual->getObjCompraEstadoTipo()->getId() : null;
                     ?>
+                        <?php if ($estadoTipo != 5): // No mostrar la compra si está en estado Carrito ?>
                         <tr>
                             <td><?php echo htmlspecialchars($cliente[0]->getNombre()); ?></td>
                             <td><?php echo htmlspecialchars(implode(", ", $productos)); ?></td>
@@ -61,36 +61,33 @@ $compras = $abmCompra->buscar(null);
                                 <?php endif; ?>
                             </td>
                             <td>
-                                <form action="modificarCompra.php" method="POST">
-                                    <input type="hidden" name="idcompra" value="<?php echo htmlspecialchars($idcompra); ?>">
-                                    <select name="nuevoEstado" class="form-select">
-                                        <option value="2" <?php echo $estadoTipo == 2 ? 'selected' : ''; ?>>Aceptar</option>
-                                        <option value="3" <?php echo $estadoTipo == 3 ? 'selected' : ''; ?>>Enviar</option>
-                                    </select>
-                                    <button type="submit" class="btn btn-primary mt-2">Cambiar Estado</button>
-                                </form>
-                                <?php if (!empty($items)): ?>
-                                    <form action="eliminarProducto.php" method="POST" class="mt-2">
-                                        <input type="hidden" name="idcompra" value="<?php echo htmlspecialchars($idcompra); ?>">
-                                        <select name="idproducto" class="form-select">
-                                            <?php foreach ($items as $item): ?>
-                                                <option value="<?php echo $item->getObjProducto()->getIdProducto(); ?>">
-                                                    <?php echo $item->getObjProducto()->getNombre(); ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                        <button type="submit" class="btn btn-danger mt-2">Eliminar Producto</button>
-                                    </form>
-                                <?php endif; ?>
-                            </td>
-                            <td>
-                                <?php if ($estadoTipo != 3 && $estadoTipo != 4): // No permitir cancelar si ya fue enviada o cancelada ?>
-                                    <button class="btn btn-danger cancelarCompra" data-idcompra="<?php echo htmlspecialchars($idcompra); ?>">Cancelar</button>
-                                <?php else: ?>
-                                    <button class="btn btn-secondary" disabled>No disponible</button>
-                                <?php endif; ?>
+                                    <?php if ($estadoTipo == 1): // Si está iniciada ?>
+                                        <form action="modificarEstado.php" method="POST" style="display:inline;">
+                                            <input type="hidden" name="idcompra" value="<?php echo htmlspecialchars($idcompra); ?>">
+                                            <input type="hidden" name="nuevoEstado" value="2">
+                                            <button type="submit" class="btn btn-primary">Aceptar</button>
+                                        </form>
+                                        <form action="cancelarCompra.php" method="POST" style="display:inline;">
+                                            <input type="hidden" name="idcompra" value="<?php echo htmlspecialchars($idcompra); ?>">
+                                        </form>
+                                    <?php elseif ($estadoTipo == 2): // Si está aceptada ?>
+                                        <form action="modificarEstado.php" method="POST" style="display:inline;">
+                                            <input type="hidden" name="idcompra" value="<?php echo htmlspecialchars($idcompra); ?>">
+                                            <input type="hidden" name="nuevoEstado" value="3">
+                                            <button type="submit" class="btn btn-success">Enviar</button>
+                                        </form>
+                                        <form action="cancelarCompra.php" method="POST" style="display:inline;">
+                                            <input type="hidden" name="idcompra" value="<?php echo htmlspecialchars($idcompra); ?>">
+                                        </form>
+                                    <?php endif; ?>
+                                    <?php if ($estadoTipo != 3 && $estadoTipo != 4): // No permitir cancelar si ya fue enviada o cancelada ?>
+                                        <button class="btn btn-danger cancelarCompra" data-idcompra="<?php echo htmlspecialchars($idcompra); ?>">Cancelar</button>
+                                    <?php else: ?>
+                                        <button class="btn btn-secondary" disabled>No disponible</button>
+                                    <?php endif; ?>
                             </td>
                         </tr>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                 </tbody>
             </table>
