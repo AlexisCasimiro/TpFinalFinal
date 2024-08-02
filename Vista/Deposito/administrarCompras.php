@@ -25,7 +25,7 @@ $compras = $abmCompra->buscar(null);
                         <th>Productos</th>
                         <th>Estado Actual</th>
                         <th>Fechas de Estados</th>
-                        <th>Cambiar Estado</th>
+                        <th>Modificar Compra</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -44,31 +44,44 @@ $compras = $abmCompra->buscar(null);
                             }
                         }
 
-                        // Obtener el estado más reciente
-                        $estadoActual = end($compraEstados);
-                        $estadoTipo = $estadoActual->getObjCompraEstadoTipo()->getId();
-                        $estadoDescripcion = $estadoActual->getObjCompraEstadoTipo()->getDescripcion();
+                        // Validar que haya estados antes de acceder al estado actual
+                        $estadoActual = !empty($compraEstados) ? end($compraEstados) : null;
+                        $estadoDescripcion = $estadoActual ? $estadoActual->getObjCompraEstadoTipo()->getDescripcion() : 'Sin estado';
+                        $estadoTipo = $estadoActual ? $estadoActual->getObjCompraEstadoTipo()->getId() : null;
                     ?>
                         <tr>
                             <td><?php echo htmlspecialchars($cliente[0]->getNombre()); ?></td>
                             <td><?php echo htmlspecialchars(implode(", ", $productos)); ?></td>
                             <td><?php echo htmlspecialchars($estadoDescripcion); ?></td>
                             <td>
-                                <?php foreach ($compraEstados as $estado): ?>
-                                    <div><?php echo htmlspecialchars($estado->getObjCompraEstadoTipo()->getDescripcion() . ": " . $estado->getFechaInicio()); ?></div>
-                                <?php endforeach; ?>
+                                <?php if (!empty($compraEstados)): ?>
+                                    <?php foreach ($compraEstados as $estado): ?>
+                                        <div><?php echo htmlspecialchars($estado->getObjCompraEstadoTipo()->getDescripcion() . ": " . $estado->getFechaInicio()); ?></div>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                             </td>
                             <td>
-                                <form action="cambiarEstado.php" method="POST">
+                                <form action="modificarCompra.php" method="POST">
                                     <input type="hidden" name="idcompra" value="<?php echo htmlspecialchars($idcompra); ?>">
                                     <select name="nuevoEstado" class="form-select">
-                                        <option value="1" <?php echo $estadoTipo == 1 ? 'selected' : ''; ?>>Iniciada</option>
-                                        <option value="2" <?php echo $estadoTipo == 2 ? 'selected' : ''; ?>>Aceptada</option>
-                                        <option value="3" <?php echo $estadoTipo == 3 ? 'selected' : ''; ?>>Enviada</option>
-                                        <option value="4" <?php echo $estadoTipo == 4 ? 'selected' : ''; ?>>Cancelada</option>
+                                        <option value="2" <?php echo $estadoTipo == 2 ? 'selected' : ''; ?>>Aceptar</option>
+                                        <option value="3" <?php echo $estadoTipo == 3 ? 'selected' : ''; ?>>Enviar</option>
                                     </select>
-                                    <button type="submit" class="btn btn-primary mt-2">Cambiar</button>
+                                    <button type="submit" class="btn btn-primary mt-2">Cambiar Estado</button>
                                 </form>
+                                <?php if (!empty($items)): ?>
+                                    <form action="eliminarProducto.php" method="POST" class="mt-2">
+                                        <input type="hidden" name="idcompra" value="<?php echo htmlspecialchars($idcompra); ?>">
+                                        <select name="idproducto" class="form-select">
+                                            <?php foreach ($items as $item): ?>
+                                                <option value="<?php echo $item->getObjProducto()->getIdProducto(); ?>">
+                                                    <?php echo $item->getObjProducto()->getNombre(); ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <button type="submit" class="btn btn-danger mt-2">Eliminar Producto</button>
+                                    </form>
+                                <?php endif; ?>
                             </td>
                             <td>
                                 <?php if ($estadoTipo != 3 && $estadoTipo != 4): // No permitir cancelar si ya fue enviada o cancelada ?>
@@ -111,4 +124,4 @@ $compras = $abmCompra->buscar(null);
 <?php
 include_once "../Estructura/footer.php";
 ?>
-<script src="../Js/cancelarCompra.js"></script>
+<script src="../Js/depositoCancelarCompra.js"></script>
