@@ -68,6 +68,8 @@ $compras = $abmCompra->buscar(null);
                                     <?php elseif ($estadoTipo == 2): // Si está aceptada ?>
                                         <button type="button" class="btn btn-success enviarCompra" data-idcompra="<?php echo htmlspecialchars($idcompra); ?>">Enviar</button>
                                         <button type="button" class="btn btn-danger cancelarCompra" data-idcompra="<?php echo htmlspecialchars($idcompra); ?>">Cancelar</button>
+                                    <?php elseif ($estadoTipo == 3): // Si está aceptada ?>
+                                        <button class="btn btn-success" disabled>Finalizada con exito</button>
                                     <?php else: ?>
                                         <button class="btn btn-secondary" disabled>No disponible</button>
                                     <?php endif; ?>

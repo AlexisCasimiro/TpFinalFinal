@@ -19,6 +19,8 @@ if (!empty($compras)) {
         $compraEstados = $abmCompraEstado->buscar(['idcompra' => $idcompra]);
         $productos = [];
         $estadoProcesado = false;
+        $ultimoEstado=end($compraEstados);
+        $comprasFiltradas[$idcompra]['estadoDescripcion'] = $ultimoEstado->getObjCompraEstadoTipo()->getDescripcion();
 
         if (!empty($compraEstados)) {
             // Filtrar los estados de la compra y busco solo los que esten en iniciada, aceptada, enviada o cancelada
@@ -37,7 +39,7 @@ if (!empty($compras)) {
                     $comprasFiltradas[$idcompra]['idcompra'] = $idcompra;
                     $comprasFiltradas[$idcompra]['fecha'] = $compra->getCoFecha();
                     $comprasFiltradas[$idcompra]['productos'] = implode(", ", $productos);
-                    $comprasFiltradas[$idcompra]['estadoDescripcion'] = $estado->getObjCompraEstadoTipo()->getDescripcion();
+                    
                     
                     $estadoProcesado = true;
                 }
