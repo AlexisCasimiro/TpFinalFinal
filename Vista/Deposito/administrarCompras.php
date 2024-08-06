@@ -124,6 +124,25 @@ $compras = $abmCompra->buscar(null);
         </div>
     </div>
 </div>
+<!-- Modal de confirmación de eliminación de producto -->
+<div class="modal fade" id="confirmEliminarProductoModal" tabindex="-1" aria-labelledby="confirmEliminarProductoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmEliminarProductoLabel">Confirmar Eliminación de Producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas eliminar este producto de la compra?
+                Este cambio es irreversible.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger" id="confirmEliminarProductoBtn">Sí, eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?php
 include_once "../Estructura/footer.php";
