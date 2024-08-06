@@ -73,27 +73,27 @@ $compras = $abmCompra->buscar(null);
                                     <?php else: ?>
                                         <button class="btn btn-secondary" disabled>No disponible</button>
                                     <?php endif; ?>
-                            </td>
-                            <td>
-                                <?php if ($estadoTipo != 3 && $estadoTipo != 4): ?>
-                                    <form action="eliminarProducto.php" method="POST">
-                                        <input type="hidden" name="idcompra" value="<?php echo htmlspecialchars($idcompra); ?>">
-                                        <div class="input-group">
-                                            <select name="idproducto" class="form-select" required>
-                                                <?php foreach ($items as $item): ?>
-                                                    <option value="<?php echo htmlspecialchars($item->getObjProducto()->getIdProducto()); ?>">
-                                                        <?php echo htmlspecialchars($item->getObjProducto()->getNombre() . ' x' . $item->getCantidad()); ?>
-                                                    </option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                            <button type="submit" class="btn btn-danger">Eliminar</button>
-                                        </div>
-                                    </form>
-                                <?php else: ?>
-                                    <button class="btn btn-secondary" disabled>No disponible</button>
-                                <?php endif; ?>
-                            </td>
-                        </tr>
+                                </td>
+                                <td>
+                                    <?php if ($estadoTipo != 3 && $estadoTipo != 4) : ?>
+                                        <form action="eliminarProducto.php" method="POST" class="form-eliminar-producto">
+                                            <input type="hidden" name="idcompra" value="<?php echo htmlspecialchars($idcompra); ?>">
+                                            <div class="input-group">
+                                                <select name="idproducto" class="form-select" required>
+                                                    <?php foreach ($items as $item) : ?>
+                                                        <option value="<?php echo htmlspecialchars($item->getObjProducto()->getIdProducto()); ?>">
+                                                            <?php echo htmlspecialchars($item->getObjProducto()->getNombre() . ' x' . $item->getCantidad()); ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <button type="button" class="btn btn-danger eliminarProducto" data-idcompra="<?php echo htmlspecialchars($idcompra); ?>">Eliminar</button>
+                                            </div>
+                                        </form>
+                                    <?php else : ?>
+                                        <button class="btn btn-secondary" disabled>No disponible</button>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </tbody>
@@ -130,3 +130,4 @@ include_once "../Estructura/footer.php";
 ?>
 <script src="../Js/depositoCancelarCompra.js"></script>
 <script src="../Js/depositoCambiarEstado.js"></script>
+<script src="../Js/depositoEliminarProducto.js"></script>

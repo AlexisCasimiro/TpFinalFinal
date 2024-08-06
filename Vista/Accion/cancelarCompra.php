@@ -36,7 +36,6 @@ if (isset($datos['idcompra'])) {
 
             if ($abmCompraEstado->alta($paramEstado)) {
                 // Obtener los items de la compra
-                // lo qeu esta haciendo es sumarle un producto a la compra, no está devolviendo el stock del producto 
                 $items = $abmCompraItem->buscar(['idcompra' => $idcompra]);
                 if (!empty($items)) {
                     foreach ($items as $item) {
