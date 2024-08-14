@@ -147,6 +147,6 @@ $compras = $abmCompra->buscar(null);
 <?php
 include_once "../Estructura/footer.php";
 ?>
-<script src="../Js/depositoCancelarCompra.js"></script>
-<script src="../Js/depositoCambiarEstado.js"></script>
-<script src="../Js/depositoEliminarProducto.js"></script>
+<script src="../Js/depositoCancelarCompraaa.js"></script>
+<script src="../Js/depositoCambiarEstadooo.js"></script>
+<script src="../Js/depositoEliminarProductooo.js"></script>

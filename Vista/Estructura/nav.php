@@ -6,9 +6,12 @@
         <i class="bi bi-person-fill"></i>
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a href="<?php echo $PROYECTOROOT ?>Vista/login.php" class="dropdown-item">Iniciar sesión</a>
+      <?php if (isset($_SESSION['idusuario'])) : ?>
         <a href="<?php echo $PROYECTOROOT ?>Vista/Cliente/editarPerfil.php" class="dropdown-item">Editar perfil</a>
         <a href="<?php echo $PROYECTOROOT ?>Vista/Accion/cerrarSesion.php" class="dropdown-item">Cerrar sesión</a>
+      <?php else: ?>
+        <a href="<?php echo $PROYECTOROOT ?>Vista/login.php" class="dropdown-item">Iniciar sesión</a>
+      <?php endif; ?>
       </div>
     </div>
   </div>

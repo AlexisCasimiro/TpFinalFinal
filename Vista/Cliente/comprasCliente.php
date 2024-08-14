@@ -19,11 +19,20 @@ if (!empty($compras)) {
         $compraEstados = $abmCompraEstado->buscar(['idcompra' => $idcompra]);
         $productos = [];
         $estadoProcesado = false;
-        $ultimoEstado=end($compraEstados);
-        $comprasFiltradas[$idcompra]['estadoDescripcion'] = $ultimoEstado->getObjCompraEstadoTipo()->getDescripcion();
 
-        if (!empty($compraEstados)) {
-            // Filtrar los estados de la compra y busco solo los que esten en iniciada, aceptada, enviada o cancelada
+        if (!empty($compraEstados) && is_array($compraEstados)) {
+            // Obtenemos el último estado
+            $ultimoEstado = end($compraEstados);
+
+            // Evitamos procesar compras en estado "carrito"
+            $ultimoEstadoTipo = $ultimoEstado->getObjCompraEstadoTipo()->getId();
+            if ($ultimoEstadoTipo == 5) { // Suponiendo que el ID del estado "carrito" es 5
+                continue;
+            }
+
+            $comprasFiltradas[$idcompra]['estadoDescripcion'] = $ultimoEstado->getObjCompraEstadoTipo()->getDescripcion();
+
+            // Filtrar los estados de la compra
             foreach ($compraEstados as $estado) {
                 $estadoTipo = $estado->getObjCompraEstadoTipo()->getId();
                 if (!$estadoProcesado && in_array($estadoTipo, [1, 2, 3, 4])) {
@@ -40,7 +49,6 @@ if (!empty($compras)) {
                     $comprasFiltradas[$idcompra]['fecha'] = $compra->getCoFecha();
                     $comprasFiltradas[$idcompra]['productos'] = implode(", ", $productos);
                     
-                    
                     $estadoProcesado = true;
                 }
                 $comprasFiltradas[$idcompra]['estadoTipo'] = $estadoTipo;
@@ -49,7 +57,6 @@ if (!empty($compras)) {
         }
     }
 }
-
 ?>
 
 <div class="container mt-5">
@@ -128,4 +135,4 @@ if (!empty($compras)) {
 <?php
 include_once "../Estructura/footer.php";
 ?>
-<script src="../Js/cancelarCompra.js"></script>
+<script src="../Js/cancelarCompraaa.js"></script>

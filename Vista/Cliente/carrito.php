@@ -137,5 +137,5 @@ if (!empty($compras)) {
 include_once "../Estructura/footer.php";
 ?>
 
-<script src="../Js/cambiarStockCarrito.js"></script>
-<script src="../Js/eliminarProductoCarro.js"></script>
+<script src="../Js/cambiarStockCarritoo.js"></script>
+<script src="../Js/eliminarProductoCarrooo.js"></script>

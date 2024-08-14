@@ -166,18 +166,13 @@ class Session
         $objAbmMenuRol = new AbmMenuRol();
         $resp = false;
         $url = $_SERVER['SCRIPT_NAME'];
-        echo $url;
         $url = strchr($url, "Vista");
         $url = str_replace("Vista", "..", $url);
-        echo "<br>".$url;
         $param['idrol'] = $this->getRolActual()->getId();
         $listaAbmMenuRol = $objAbmMenuRol->buscar($param);
         foreach ($listaAbmMenuRol as $obj) {
-            echo "<br>";
-            echo $obj->getObjMenu()->getDescripcion();
             if ($obj->getObjMenu()->getDescripcion() == $url) {
                 $resp = true;
-                echo "trueeeee";
             }
         }
         return $resp;

@@ -2,7 +2,6 @@
 
 $session = new Session;
 $objAbmMenuRol = new AbmMenuRol();
-var_dump($_SESSION);
 
 // Ruta de la página actual
 $currentUri = $_SERVER['REQUEST_URI'];
