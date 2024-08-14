@@ -41,6 +41,7 @@ class Session
                 $roles[] = $unRol->getId();
             }
             $_SESSION['idroles'] = $roles; //guardo los id de los roles que tiene el usuario 
+            $_SESSION['rolelegido']=$listaObjRoles[0]->getId();
             $resp = true;
         } else {
             $this->cerrar();
@@ -93,8 +94,7 @@ class Session
     /** METODO GETROLES
      * @return array
      */
-    public function getRoles()
-    {
+    public function getRoles(){
         $listaRoles = [];
         $objRolesUsuarios = null;
         if ($this->getUsuario() != null) {
@@ -103,12 +103,34 @@ class Session
             $objRolUsuario = new AbmUsuarioRol();
             $objRolesUsuarios = $objRolUsuario->buscar($datos); // busca en la tabla usuarioRol los roles que coincide con el id del usuario
 
+            // Agregar roles del usuario
             foreach ($objRolesUsuarios as $objRolUsuario) {
                 array_push($listaRoles, $objRolUsuario->getObjRol());
             }
-        } // fin if 
+
+            // Verificar si hay un rol elegido en la sesión
+            if (isset($_SESSION['rolelegido'])) {
+                $roleElegidoId = $_SESSION['rolelegido'];
+                $roleElegido = null;
+
+                // Buscar el objeto de rol elegido
+                foreach ($listaRoles as $key => $rol) {
+                    if ($rol->getId() == $roleElegidoId) {
+                        $roleElegido = $rol;
+                        // Remover el rol elegido de la lista temporalmente
+                        unset($listaRoles[$key]);
+                        break;
+                    }
+                }
+
+                // Si se encontró, agregarlo al inicio de la lista
+                if ($roleElegido !== null) {
+                    array_unshift($listaRoles, $roleElegido);
+                }
+            }
+        }
         return $listaRoles;  // puede devolver una lista de usuarios con distintos roles o un solo usuario con un unico rol
-    } // fin metodo getRol
+    }
 
     /** METODO CERRAR 
      * @return boolean
@@ -131,7 +153,7 @@ class Session
     public function getRolActual()
     {
         $objAbmRol = New AbmRol;
-        $param['idrol'] = $_SESSION["idRol"];
+        $param['idrol'] = $_SESSION["rolelegido"];
         $listaObj = $objAbmRol->buscar($param);
         return $listaObj[0];
     }
@@ -144,13 +166,18 @@ class Session
         $objAbmMenuRol = new AbmMenuRol();
         $resp = false;
         $url = $_SERVER['SCRIPT_NAME'];
+        echo $url;
         $url = strchr($url, "Vista");
         $url = str_replace("Vista", "..", $url);
+        echo "<br>".$url;
         $param['idrol'] = $this->getRolActual()->getId();
         $listaAbmMenuRol = $objAbmMenuRol->buscar($param);
         foreach ($listaAbmMenuRol as $obj) {
+            echo "<br>";
+            echo $obj->getObjMenu()->getDescripcion();
             if ($obj->getObjMenu()->getDescripcion() == $url) {
                 $resp = true;
+                echo "trueeeee";
             }
         }
         return $resp;

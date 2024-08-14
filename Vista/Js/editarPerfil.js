@@ -53,14 +53,7 @@ $(document).ready(function() {
         url: '../Accion/modificarPerfil.php',
         data: formData,
         success: function(response) {
-          // Manejar la respuesta del servidor
-          
-          //if (response == true) {
-          //  window.location.href=proyectoroot+"Vista/Cliente/editarPerfil.php?correcto=1";
-          //} else {
-            // Error en la modificación
             window.location.href=proyectoroot+"Vista/Cliente/editarPerfil.php?correcto=1";
-          //}
         },
         error: function(xhr, status, error) {
           // Manejar errores de Ajax

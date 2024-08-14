@@ -103,11 +103,16 @@ CREATE TABLE `menu` (
 --
 
 INSERT INTO `menu` (`idmenu`, `menombre`, `medescripcion`, `idpadre`, `medeshabilitado`) VALUES
-(7, 'nuevo', 'kkkkk', NULL, NULL),
-(8, 'nuevo', 'kkkkk', NULL, NULL),
-(9, 'nuevo', 'kkkkk', 7, NULL),
-(10, 'nuevo', 'kkkkk', NULL, NULL),
-(11, 'nuevo', 'kkkkk', NULL, NULL);
+(1, 'Productos', '../Cliente/productos.php', NULL, NULL),
+(2, 'Carrito', '../Cliente/carrito.php', NULL, NULL),
+(3, 'Mis compras', '../Cliente/comprasCliente.php', NULL, NULL),
+(4, 'Crear Roles', '../Administrador/crearRol.php', NULL, NULL),
+(5, 'Listar Usuarios', '../Administrador/listaUsuarios.php', NULL, NULL),
+(6, 'Roles de Usuarios', '../Administrador/rolesUsuarios.php', NULL, NULL),
+(7, 'Administrar compras', '../Deposito/administrarCompras.php', NULL, NULL),
+(8, 'Administrar productos', '../Deposito/administrarProductos.php', NULL, NULL),
+(9, 'Agregar productos', '../Deposito/agregarProducto.php', NULL, NULL),
+(10, 'Inicio', '../Cliente/indexCliente.php', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -119,6 +124,23 @@ CREATE TABLE `menurol` (
   `idmenu` bigint(20) NOT NULL,
   `idrol` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `menu`
+--
+INSERT INTO `menurol` (`idmenu`, `idrol`) VALUES 
+(1, 3),
+(2, 3),
+(3, 3),
+(4, 1),
+(5, 1),
+(6, 1),
+(7, 2),
+(8, 2),
+(9, 2),
+(10, 1),
+(10, 2),
+(10, 3);
 
 -- --------------------------------------------------------
 
