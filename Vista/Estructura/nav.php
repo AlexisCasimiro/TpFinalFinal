@@ -15,8 +15,9 @@
   <!-- Enlaces de la barra de navegación -->
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav me-auto">
-        <li class="nav-item "><a href="../Cliente/indexCliente.php" class="nav-link active text-primary">Inicio</a></li>
-      <?php echo $menu; ?>
+        <?php if (!empty($menu)) : ?>
+          <?php echo $menu;?>
+        <?php endif; ?>
     </ul>
   </div>
   <?php if (!empty($menuRol)) : ?>
