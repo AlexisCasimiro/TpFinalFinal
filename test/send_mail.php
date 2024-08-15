@@ -8,6 +8,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     //$mail = new PHPMailer(true);
     $mail = new Mailer();
-    $mail->mandarMail();
+    $mail->mandarMail($para);
 }
 ?>
