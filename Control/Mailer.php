@@ -11,54 +11,35 @@ require '../vendor/autoload.php';
 //Create an instance; passing true enables exceptions
 
 class Mailer{
-    private $mail;
-    private $nomberDestinatario;
-    private $mailDestinatario;
+
+
+    public function mandarMail($para){
+
+        try {
+            $mail = new PHPMailer(true);
+            // Configuración del servidor
+            $mail->SMTPDebug = 0;                                       // Habilitar salida de depuración detallada
+            $mail->isSMTP();                                            // Configurar el mailer para usar SMTP
+            $mail->Host       = 'smtp.gmail.com';                       // Servidor SMTP
+            $mail->SMTPAuth   = true;                                   // Habilitar autenticación SMTP
+            $mail->Username   = 'exequielcasimiro@gmail.com';                   // Tu usuario de SMTP
+            $mail->Password   = 'vljtfrdhcqnveytw';                        // Tu contraseña SMTP
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Habilitar TLS
+            $mail->Port       = 587;                                    // Puerto TCP al que se conecta
     
-    public function __construct($name,$mail){
-        $this->mail = new PHPMailer(true);
-        $this->mail->CharSet='utf-8';
-        $this->mail->isHTML(true);                                  //Set email format to HTML
-        $this->mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
-        $this->mail->isSMTP();                                            //Send using SMTP
-        $this->mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
-        $this->mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-        $this->mail->Username   = 'exequielcasimiro@gmail.com';//'franinsua7@gmail.com';                     //SMTP username
-        $this->mail->Password   = 'vljtfrdhcqnveytw';//'nwtrbloritlhvkxq';                               //SMTP password
-        $this->mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;            // tls  Enable implicit TLS encryption
-        $this->mail->Port       = 587;     
-        $this->nomberDestinatario=$name;
-        $this->mailDestinatario=$mail;                               //TCP port to connect to; use 587 if you have set SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS
-        $this->mail->setFrom('exequielcasimiro@gmail.com', 'JP WEB DESIGN');
-        
-    }// fin constructor 
-
-    public function getNombre(){
-        return $this->nomberDestinatario;
-    }
-    public function getMail(){
-        return $this->mailDestinatario;
-    }
-
-
-    public function mandarMail(){
-
-        $this->mail->addAddress($this->getMail(),$this->getNombre());
-        //Content
-        
-
-
-        $this->mail->Subject = 'Probando envio de mail';
-        $this->mail->Body    = 'This is the HTML message body <b>in bold!</b>';
-        
-        try{
-            $salida=$this->mail->send();
-            echo 'Enviado Correctamente';
-            return $salida;
-        }
-        catch (Exception $e){
-            return $e;
-
+            // Destinatarios
+            $mail->setFrom('exequielcasimiro@gmail.com', 'Mailer');
+            $mail->addAddress($para);                                   // Añadir un destinatario
+    
+            // Contenido
+            $mail->isHTML(true);                                        // Configurar el formato del email como HTML
+            $mail->Subject = 'El título';
+            $mail->Body    = 'Hola';
+    
+            $mail->send();
+            echo 'El mensaje ha sido enviado';
+        } catch (Exception $e) {
+            echo "No se pudo enviar el mensaje. Mailer Error: {$mail->ErrorInfo}";
         }
     }// fin function 
 
