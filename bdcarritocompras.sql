@@ -112,7 +112,8 @@ INSERT INTO `menu` (`idmenu`, `menombre`, `medescripcion`, `idpadre`, `medeshabi
 (7, 'Administrar compras', '../Deposito/administrarCompras.php', NULL, NULL),
 (8, 'Administrar productos', '../Deposito/administrarProductos.php', NULL, NULL),
 (9, 'Agregar productos', '../Deposito/agregarProducto.php', NULL, NULL),
-(10, 'Inicio', '../Cliente/indexCliente.php', NULL, NULL);
+(10, 'Inicio', '../Cliente/indexCliente.php', NULL, NULL),
+(11, 'Editar Perfil', '../Cliente/editarPerfil.php', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -140,7 +141,10 @@ INSERT INTO `menurol` (`idmenu`, `idrol`) VALUES
 (9, 2),
 (10, 1),
 (10, 2),
-(10, 3);
+(10, 3),
+(11,1),
+(11,2),
+(11,3);
 
 -- --------------------------------------------------------
 

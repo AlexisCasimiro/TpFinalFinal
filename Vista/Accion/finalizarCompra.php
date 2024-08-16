@@ -60,6 +60,11 @@ if (isset($datos['idcompra'])) {
                         //$producto->modificar();
                         $abmProducto->modificacionStock(['idproducto'=>$item->getObjProducto()->getIdProducto(), 'procantstock'=> $nuevoStock]);
                     }
+                    // Logica para el envio de mail 
+                    $abmCompra = new AbmCompra;
+                    $objCompra = $abmCompra->buscar(['idcompra'=>$idcompra])[0];
+                    $mail = new Mailer();
+                    $mail->mandarMail($objCompra);
                     // Redirigir al carrito con un mensaje de éxito
                     header("Location: ../Cliente/ComprasCliente.php");
                     exit;
@@ -83,4 +88,3 @@ if (isset($datos['idcompra'])) {
     header("Location: carrito.php?error=1");
     exit;
 }
-?>

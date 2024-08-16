@@ -25,9 +25,4 @@ if ($session->validar() && $session->permisos()) {
     }
 }
 
-//
-//
-//  AQUI DEBO AGREGAR UN HEADER EN CASO QUE NO TENGA PERMISOS O QUE AL VALIDAR SEA FALSE
-//
-//
 ?>
