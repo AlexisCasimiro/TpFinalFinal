@@ -69,7 +69,7 @@ $compras = $abmCompra->buscar(null);
                                         <button type="button" class="btn btn-success enviarCompra" data-idcompra="<?php echo htmlspecialchars($idcompra); ?>">Enviar</button>
                                         <button type="button" class="btn btn-danger cancelarCompra" data-idcompra="<?php echo htmlspecialchars($idcompra); ?>">Cancelar</button>
                                     <?php elseif ($estadoTipo == 3): // Si está aceptada ?>
-                                        <button class="btn btn-success" disabled>Finalizada con exito</button>
+                                        <button class="btn btn-success" disabled>Finalizada con éxito</button>
                                     <?php else: ?>
                                         <button class="btn btn-secondary" disabled>No disponible</button>
                                     <?php endif; ?>
@@ -147,6 +147,6 @@ $compras = $abmCompra->buscar(null);
 <?php
 include_once "../Estructura/footer.php";
 ?>
-<script src="../Js/depositoCancelarCompraaa.js"></script>
-<script src="../Js/depositoCambiarEstadooo.js"></script>
+<script src="../Js/depositoCancelarCompraaaa.js"></script>
+<script src="../Js/depositoCambiarEstadoooo.js"></script>
 <script src="../Js/depositoEliminarProductooo.js"></script>

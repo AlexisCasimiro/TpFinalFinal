@@ -48,7 +48,12 @@ if (isset($datos['idcompra'])) {
                             $abmProducto->modificacionStock(['idproducto' => $item->getObjProducto()->getIdProducto(), 'procantstock' => $sumarStock]);
                         }
                     }
+                    
                 }
+                // Logica para el envio de mail 
+                $objCompra = $abmCompra->buscar(['idcompra'=>$idcompra])[0];
+                $mail = new Mailer();
+                $mail->mandarMail($objCompra);
                 $response = ['success' => true];
             } else {
                 $response['message'] = 'No se pudo cancelar la compra.';

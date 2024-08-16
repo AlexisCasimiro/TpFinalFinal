@@ -49,6 +49,9 @@ if (isset($datos['idcompra'])) {
                         }
                     }
                 }
+                // Logica para el envio de mail
+                $mail = new Mailer();
+                $mail->mandarMail($compra);
                 $response = ['success' => true];
             } else {
                 $response['message'] = 'No se pudo cancelar la compra.';

@@ -135,4 +135,4 @@ if (!empty($compras)) {
 <?php
 include_once "../Estructura/footer.php";
 ?>
-<script src="../Js/cancelarCompraaa.js"></script>
+<script src="../Js/cancelarCompraaaa.js"></script>

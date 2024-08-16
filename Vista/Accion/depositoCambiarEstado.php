@@ -35,6 +35,10 @@ if (isset($datos['idcompra']) && isset($datos['nuevoEstado'])) {
                 'cefechafin' => null,
             ];
             if ($abmCompraEstado->alta($param)) {
+                // Logica para el envio de mail 
+                $objCompra = $compra[0];
+                $mail = new Mailer();
+                $mail->mandarMail($objCompra);
                 $response = ['success' => true, 'message' => 'Estado de la compra actualizado exitosamente.'];
             } else {
                 $response['message'] = 'No se pudo actualizar el estado de la compra.';
