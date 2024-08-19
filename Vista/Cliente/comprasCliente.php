@@ -26,7 +26,7 @@ if (!empty($compras)) {
 
             // Evitamos procesar compras en estado "carrito"
             $ultimoEstadoTipo = $ultimoEstado->getObjCompraEstadoTipo()->getId();
-            if ($ultimoEstadoTipo == 5) { // Suponiendo que el ID del estado "carrito" es 5
+            if ($ultimoEstadoTipo == 5) { 
                 continue;
             }
 

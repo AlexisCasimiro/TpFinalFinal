@@ -1,12 +1,8 @@
 <?php
 include_once "../../configuracion.php";
 include_once "../Estructura/nav.php";
-//dia 2 del 4 tuve un error de no inicializar el session_start() en el ver menu, o sea me faltaba el script ver menu y en ese script estaba el new Session;
-// lo siguiente todavia no va hasta no tener el vermenu creado
 $usuario = $session->getUsuario();
 
-//$usuario=$SESSION->getUsuario();
-//var_dump($usuario);
 ?>
 <?php
 // Verificar si hay un parámetro de error en la URL

@@ -56,6 +56,5 @@ if (count($colProductos)>0){
 </div>
 
 <?php
-echo $_SESSION['idusuario'];//eliminar
 include_once "../Estructura/footer.php";
 ?>

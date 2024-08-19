@@ -78,7 +78,6 @@ $(document).ready(function() {
                 error: function(xhr, status, error) {
                     // Manejar errores de la solicitud AJAX
                     console.error('Error en la solicitud AJAX:', error);
-                    // Puedes mostrar un mensaje de error al usuario aquí si lo deseas
                 }
             });
         }

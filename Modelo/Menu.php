@@ -262,7 +262,7 @@ class Menu{
                         $objPadre->cargar(); 
                     } // fin if 
                     $obj->setear($row['idmenu'],$row['menombre'],$row['medescripcion'],$objPadre,$row['medeshabilitado']);
-                    array_push($arrayUsuarios,$obj);   
+                    array_push($arrayMenus,$obj);   
                     }// fin while 
 
 

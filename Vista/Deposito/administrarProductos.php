@@ -27,8 +27,6 @@ if (isset($_POST['idproducto'])) {
     $cantProducto = $producto->getCantStock();
     $imagenProducto = $producto->getImagen();
 }
-echo $idProductoBuscar['idproducto'];
-var_dump($datos);
 
 // Verificar si hay un parámetro de error en la URL
 $error=isset($_GET['error']) ? $_GET['error'] : null;
