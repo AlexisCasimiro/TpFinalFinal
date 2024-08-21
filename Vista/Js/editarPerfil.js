@@ -28,7 +28,7 @@ $(document).ready(function() {
       emailValid=false;
     }
 
-    // Validar contraseña actual (se puede implementar una lógica más robusta aquí)
+    // Validar contraseña 
     var currentPassword = $('#current-password').val();
     if (currentPassword.trim() === '' || (md5(currentPassword) != passActual)) {
       $('#current-password').addClass('is-invalid');
