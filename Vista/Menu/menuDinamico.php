@@ -24,5 +24,5 @@ if ($session->validar() && $session->permisos()) {
         
     }
 }
-
+//esto solo es un comentario no darle bola por favor 
 ?>
